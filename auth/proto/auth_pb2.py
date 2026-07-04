@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"1\n\x0b\x43redentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"O\n\rLoginResponse\x12\x13\n\x0b\x61\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_at\x18\x03 \x01(\x03\"\'\n\x0eRefreshRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\"9\n\x0eRefresResponse\x12\x13\n\x0b\x61\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nexpires_at\x18\x02 \x01(\x03\"&\n\rLogoutRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\"\x10\n\x0eLogoutResponse2\xa8\x01\n\x04\x41uth\x12/\n\x05Login\x12\x11.auth.Credentials\x1a\x13.auth.LoginResponse\x12:\n\x0cRefreshToken\x12\x14.auth.RefreshRequest\x1a\x14.auth.RefresResponse\x12\x33\n\x06Logout\x12\x13.auth.LogoutRequest\x1a\x14.auth.LogoutResponseb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\nauth.proto\x12\x04\x61uth\"1\n\x0b\x43redentials\x12\x10\n\x08username\x18\x01 \x01(\t\x12\x10\n\x08password\x18\x02 \x01(\t\"P\n\rLoginResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x15\n\rrefresh_token\x18\x02 \x01(\t\x12\x12\n\nexpires_at\x18\x03 \x01(\x03\"\'\n\x0eRefreshRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\":\n\x0eRefresResponse\x12\x14\n\x0c\x61\x63\x63\x65ss_token\x18\x01 \x01(\t\x12\x12\n\nexpires_at\x18\x02 \x01(\x03\"&\n\rLogoutRequest\x12\x15\n\rrefresh_token\x18\x01 \x01(\t\"\x10\n\x0eLogoutResponse2\xa8\x01\n\x04\x41uth\x12/\n\x05Login\x12\x11.auth.Credentials\x1a\x13.auth.LoginResponse\x12:\n\x0cRefreshToken\x12\x14.auth.RefreshRequest\x1a\x14.auth.RefresResponse\x12\x33\n\x06Logout\x12\x13.auth.LogoutRequest\x1a\x14.auth.LogoutResponseb\x06proto3')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,15 +34,15 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_CREDENTIALS']._serialized_start=20
   _globals['_CREDENTIALS']._serialized_end=69
   _globals['_LOGINRESPONSE']._serialized_start=71
-  _globals['_LOGINRESPONSE']._serialized_end=150
-  _globals['_REFRESHREQUEST']._serialized_start=152
-  _globals['_REFRESHREQUEST']._serialized_end=191
-  _globals['_REFRESRESPONSE']._serialized_start=193
-  _globals['_REFRESRESPONSE']._serialized_end=250
-  _globals['_LOGOUTREQUEST']._serialized_start=252
-  _globals['_LOGOUTREQUEST']._serialized_end=290
-  _globals['_LOGOUTRESPONSE']._serialized_start=292
-  _globals['_LOGOUTRESPONSE']._serialized_end=308
-  _globals['_AUTH']._serialized_start=311
-  _globals['_AUTH']._serialized_end=479
+  _globals['_LOGINRESPONSE']._serialized_end=151
+  _globals['_REFRESHREQUEST']._serialized_start=153
+  _globals['_REFRESHREQUEST']._serialized_end=192
+  _globals['_REFRESRESPONSE']._serialized_start=194
+  _globals['_REFRESRESPONSE']._serialized_end=252
+  _globals['_LOGOUTREQUEST']._serialized_start=254
+  _globals['_LOGOUTREQUEST']._serialized_end=292
+  _globals['_LOGOUTRESPONSE']._serialized_start=294
+  _globals['_LOGOUTRESPONSE']._serialized_end=310
+  _globals['_AUTH']._serialized_start=313
+  _globals['_AUTH']._serialized_end=481
 # @@protoc_insertion_point(module_scope)

@@ -10,7 +10,7 @@ def user_repository():
     subir uma conexão de teste (ex: sqlite em memória, container
     Postgres via testcontainers, etc.) e popular dados fixos.
     """
-    from app.AuthService import InMemoryUserRepository
+    from app.Memory import InMemoryUserRepository
 
     repo = InMemoryUserRepository()
     repo.create_user(username="user", password="senha123", permission=("FULL"))

@@ -10,7 +10,7 @@ import pytest
 from concurrent import futures
 
 from proto import auth_pb2_grpc
-from app import AuthService
+from app.AuthService import AuthService
 
 
 # ---------------------------------------------------------------------------
@@ -29,7 +29,7 @@ def user_repository():
     from app.AuthService import InMemoryUserRepository
 
     repo = InMemoryUserRepository()
-    repo.create_user(username="user", password="senha123")
+    repo.create_user(username="user", password="senha123", permission=["FULL"])
     yield repo
     repo.clear()
 

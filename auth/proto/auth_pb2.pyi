@@ -13,14 +13,14 @@ class Credentials(_message.Message):
     def __init__(self, username: _Optional[str] = ..., password: _Optional[str] = ...) -> None: ...
 
 class LoginResponse(_message.Message):
-    __slots__ = ("acess_token", "refresh_token", "expires_at")
-    ACESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("access_token", "refresh_token", "expires_at")
+    ACCESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
     REFRESH_TOKEN_FIELD_NUMBER: _ClassVar[int]
     EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
-    acess_token: str
+    access_token: str
     refresh_token: str
     expires_at: int
-    def __init__(self, acess_token: _Optional[str] = ..., refresh_token: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
+    def __init__(self, access_token: _Optional[str] = ..., refresh_token: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
 
 class RefreshRequest(_message.Message):
     __slots__ = ("refresh_token",)
@@ -29,12 +29,12 @@ class RefreshRequest(_message.Message):
     def __init__(self, refresh_token: _Optional[str] = ...) -> None: ...
 
 class RefresResponse(_message.Message):
-    __slots__ = ("acess_token", "expires_at")
-    ACESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("access_token", "expires_at")
+    ACCESS_TOKEN_FIELD_NUMBER: _ClassVar[int]
     EXPIRES_AT_FIELD_NUMBER: _ClassVar[int]
-    acess_token: str
+    access_token: str
     expires_at: int
-    def __init__(self, acess_token: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
+    def __init__(self, access_token: _Optional[str] = ..., expires_at: _Optional[int] = ...) -> None: ...
 
 class LogoutRequest(_message.Message):
     __slots__ = ("refresh_token",)
