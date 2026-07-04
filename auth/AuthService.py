@@ -1,12 +1,17 @@
 import os
 import sys
 
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if PROJECT_ROOT not in sys.path:
-    sys.path.insert(0, PROJECT_ROOT)
+if __package__ in {None, ""}:
+    sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.Memory import *
-from proto import auth_pb2_grpc, auth_pb2
+try:
+    from .proto import auth_pb2_grpc
+    from .proto import auth_pb2
+    from .Memory import *
+except ImportError:
+    from proto import auth_pb2_grpc
+    from proto import auth_pb2
+    from Memory import *
 
 import time, grpc, jwt
 

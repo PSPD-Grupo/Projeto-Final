@@ -1,0 +1,10 @@
+services:
+  auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "50051:50051"
+    working_dir: /app
+    command: python -m app

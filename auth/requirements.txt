@@ -1,0 +1,4 @@
+grpcio==1.81.1
+protobuf==7.35.1
+PyJWT==2.13.0
+pytest==9.1.1
