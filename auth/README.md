@@ -63,6 +63,48 @@ Se for necessário atualizar o contrato, é preciso regerar os arquivos Python g
 ./gera_proto.sh
 ```
 
+## Formato do JWT
+
+Os tokens emitidos pelo serviço são JWTs em formato HS256. O payload contém:
+- `exp`: timestamp de expiração
+- `ANONYMIZED`: permissão booleana
+- `AGGREGATED`: permissão booleana
+- `PARTIAL`: permissão booleana
+- `FULL`: permissão booleana
+
+Exemplo de payload:
+```json
+{
+  "ANONYMIZED": false,
+  "AGGREGATED": false,
+  "PARTIAL": false,
+  "FULL": true,
+  "exp": 1760000000
+}
+```
+
+Exemplo de código em Python para decodificar e validar o token:
+```python
+import jwt
+from app.AuthService import SECRET
+
+token = "<token_jwt_aqui>"
+
+try:
+    payload = jwt.decode(token, SECRET, algorithms=["HS256"])
+    print(payload)
+
+    if payload.get("FULL") is True:
+        print("Usuário possui permissão FULL")
+    else:
+        print("Usuário não possui permissão FULL")
+
+except jwt.ExpiredSignatureError:
+    print("Token expirado")
+except jwt.InvalidTokenError:
+    print("Token inválido")
+```
+
 ## Banco de dados
 
 Atualmente, a conexão com um banco de dados real ainda não está implementada.
