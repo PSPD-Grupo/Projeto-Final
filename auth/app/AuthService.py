@@ -31,6 +31,19 @@ class AuthService(auth_pb2_grpc.AuthServicer):
     def Login(self, request: auth_pb2.Credentials, context: grpc.ServicerContext):
         pass
 
+    def RefreshToken(self, request, context):
+        return super().RefreshToken(request, context)
+    
+    def Logout(self, request, context):
+        return super().Logout(request, context)
+    
+    def _generateToken(self, permission) -> str:
+        return ""
+    
+    
+
+
+
 def serve(port: str = "50051"):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
  
