@@ -1,5 +1,5 @@
 import pytest
-from app import AuthService
+from app.AuthService import AuthService
 
 @pytest.fixture(scope="function")
 def user_repository():
@@ -13,11 +13,10 @@ def user_repository():
     from app.AuthService import InMemoryUserRepository
 
     repo = InMemoryUserRepository()
-    repo.create_user(username="user", password="senha123")
+    repo.create_user(username="user", password="senha123", permission=("FULL"))
     yield repo
     repo.clear()
 
 @pytest.fixture(scope="function")
-def AuthService(user_repository):
-    authService = AuthService(user_repository)
-    yield authService
+def auth_service(user_repository):
+    return AuthService(user_repository) 
