@@ -56,7 +56,7 @@ class AuthClient:
             stub = auth_pb2_grpc.AuthStub(channel)
             try:
                 response = stub.Logout(auth_pb2.LogoutRequest(refresh_token=token))
-                return 
+                return {}
             except grpc.RpcError as e:
                 print('-='*50)
                 print(e.code())
