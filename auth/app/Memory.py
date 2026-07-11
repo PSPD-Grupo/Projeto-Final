@@ -1,4 +1,3 @@
-SECRET = "DT4xMpG3kn44CsQ1ijgTjrWftPTU3AQ9+jmSNT/4vUs="
 
 
 class UserNotFoundError(Exception):

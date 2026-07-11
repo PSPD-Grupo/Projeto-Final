@@ -13,7 +13,7 @@ import time, grpc, jwt
 
 ACCESS_TOKEN_TLL_SECCOND = 30*60
 REFRESH_TOKEN_TLL_SECCOND = 60*60*24
-
+SECRET = os.environ(['SECRET'])
 
 
 
