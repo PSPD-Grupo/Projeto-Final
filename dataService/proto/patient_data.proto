@@ -1,0 +1,89 @@
+syntax = "proto3";
+
+package patientdata;
+
+service PatientDataService {
+  rpc HealthCheck(HealthCheckRequest) returns (HealthCheckResponse);
+  rpc GetPatient(GetPatientRequest) returns (GetPatientResponse);
+  rpc SearchPatients(SearchPatientsRequest) returns (SearchPatientsResponse);
+  rpc ListEncounters(ListEncountersRequest) returns (ListEncountersResponse);
+  rpc ListClinicalEvents(ListClinicalEventsRequest) returns (ListClinicalEventsResponse);
+}
+
+message HealthCheckRequest {}
+
+message HealthCheckResponse {
+  string status = 1;
+}
+
+message Patient {
+  string patient_id = 1;
+  string full_name = 2;
+  string birth_date = 3;
+  string gender = 4;
+  string city = 5;
+  string state = 6;
+  string cpf = 7;
+  string cns = 8;
+}
+
+message Encounter {
+  string encounter_id = 1;
+  string patient_id = 2;
+  string start_date = 3;
+  string end_date = 4;
+  string encounter_type = 5;
+  string department = 6;
+}
+
+message ClinicalEvent {
+  string event_id = 1;
+  string patient_id = 2;
+  string encounter_id = 3;
+  string event_type = 4;
+  string code = 5;
+  string description = 6;
+  string value = 7;
+  string unit = 8;
+  string event_date = 9;
+}
+
+message GetPatientRequest {
+  string patient_id = 1;
+}
+
+message GetPatientResponse {
+  Patient patient = 1;
+}
+
+message SearchPatientsRequest {
+  string query = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message SearchPatientsResponse {
+  repeated Patient patients = 1;
+}
+
+message ListEncountersRequest {
+  string patient_id = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+}
+
+message ListEncountersResponse {
+  repeated Encounter encounters = 1;
+}
+
+message ListClinicalEventsRequest {
+  string patient_id = 1;
+  string encounter_id = 2;
+  string event_type = 3;
+  int32 limit = 4;
+  int32 offset = 5;
+}
+
+message ListClinicalEventsResponse {
+  repeated ClinicalEvent events = 1;
+}

@@ -1,0 +1,7 @@
+$ErrorActionPreference = "Stop"
+
+python -m grpc_tools.protoc `
+  -I proto `
+  --python_out=src/generated `
+  --grpc_python_out=src/generated `
+  proto/patient_data.proto
