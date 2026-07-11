@@ -36,11 +36,11 @@ def data_base_prep():
 @pytest.fixture(scope="module", name="dbConn")
 def create_conn(data_base_prep):
     dbConn = DataBaseConnection(
-        dbname="auth_hospital",
-        user="postgres",
-        password="postgres",
-        host="localhost",
-        port=5432,
+        dbname=os.getenv("dbname"),
+        user=os.getenv("dbUser"),
+        password=os.getenv("dbPassword"),
+        host=os.getenv("dbHost"),
+        port=os.getenv("dbPort"),
     )
     yield dbConn
     dbConn.clear()

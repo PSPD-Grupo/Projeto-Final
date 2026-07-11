@@ -3,14 +3,6 @@ from app.DataBase import DataBaseConnection
 from app.Memory import UserNotFoundError
 
 class TestDataBase:
-    def test_database_conn(self):
-        db = DataBaseConnection(
-            dbname="auth_hospital", user="postgres", 
-            password="postgres",host="localhost", port=5432
-        )
-
-        assert db is not None
-    
     def test_check_credential_success(self, dbConn, real_user):
         logado = dbConn.check_credentials(real_user["username"], real_user["password"])
         assert logado is True
