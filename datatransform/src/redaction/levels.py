@@ -7,6 +7,11 @@ _DROP_FIELDS = {
     AccessLevel.ANONYMIZED: ["identifier", "name", "birthDate"],
 }
 
+IGNORE = {
+    "da", "de", "do", "das", "dos",
+    "e", "d'"
+}
+
 
 def redact_patient(resource: dict, level: AccessLevel, salt: str) -> dict:
     resource = dict(resource)
@@ -15,8 +20,12 @@ def redact_patient(resource: dict, level: AccessLevel, salt: str) -> dict:
         resource.pop(field, None)
 
     if level == AccessLevel.PARTIAL:
-        full_name = resource.get("name", [{}])[0].get("text", "")
-        initials = "".join(w[0] for w in full_name.split() if w)
+        name = resource.get("name", [{}])[0].get("text", "")
+        initials = "".join(
+            word[0].upper()
+            for word in name.split()
+            if word and word.lower() not in IGNORE
+        )
         resource["name"] = [{"text": initials}]
         resource["birthDate"] = resource["birthDate"][:4] if resource.get("birthDate") else None
 

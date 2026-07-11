@@ -1,6 +1,6 @@
 import pytest
 
-TEST_SECRET = "test-secret"
+TEST_SECRET = "test-secret-with-at-least-32-bytes"
 TEST_SALT = "test-salt"
 
 

@@ -5,11 +5,12 @@ COPY proto/ proto/
 COPY src/ src/
 RUN pip install --no-cache-dir --target=/build/deps -r requirements.txt grpcio-tools
 RUN touch proto/__init__.py
-RUN python -m grpc_tools.protoc \
-    -I proto \
-    --python_out=proto \
-    --grpc_python_out=proto \
-    proto/datatransform.proto
+RUN PYTHONPATH=/build/deps \
+    python -m grpc_tools.protoc \
+        -I proto \
+        --python_out=proto \
+        --grpc_python_out=proto \
+        proto/datatransform.proto
 
 FROM python:3.11-slim
 WORKDIR /app

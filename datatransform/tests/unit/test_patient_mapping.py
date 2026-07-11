@@ -2,7 +2,7 @@ from fhir.patient import patient_to_fhir
 
 class FakePatient:
     patient_id = "P000001"
-    full_name = "João da Silva"
+    name = "João da Silva"
     birth_date = "1970-05-10"
     gender = "male"
     city = "Brasília"

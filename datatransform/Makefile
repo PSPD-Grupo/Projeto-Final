@@ -4,7 +4,7 @@ PIP := $(VENV)/bin/pip
 
 PROTO_DIR := proto
 
-.PHONY: venv install proto run test test-unit test-integration lint clean docker-build docker-up
+.PHONY: venv install proto run test test-unit test-integration lint clean build up
 
 venv:
 	python3 -m venv $(VENV)
@@ -45,8 +45,8 @@ clean:
 	rm -f $(PROTO_DIR)/datatransform_pb2*.py $(PROTO_DIR)/datatransform_pb2*.pyi
 	find . -type d -name __pycache__ -exec rm -rf {} +
 
-docker-build:
+build:
 	docker build -t data-transform-service:latest .
 
-docker-up:
+up:
 	docker compose up --build

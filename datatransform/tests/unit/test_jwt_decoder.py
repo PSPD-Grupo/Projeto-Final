@@ -19,4 +19,4 @@ def test_token_expirado_gera_erro():
 def test_secret_errado_gera_erro():
     token = make_token(full=True)
     with pytest.raises(InvalidTokenError):
-        decode_token(token, "secret-errado")
+        decode_token(token, "another-wrong-secret-32-bytes-xx")

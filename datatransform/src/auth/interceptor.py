@@ -4,7 +4,7 @@ from auth.jwt_decoder import decode_token, InvalidTokenError
 from auth.access_level import resolve_access_level, NoAccessLevelError
 
 
-class _ContextWrapper(grpc.ServicerContext):
+class _ContextWrapper:
     """Encapsula o context original só pra pendurar o access_level nele,
     sem precisar mudar a assinatura dos métodos do servicer."""
 
