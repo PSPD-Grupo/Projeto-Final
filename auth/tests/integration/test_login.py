@@ -12,9 +12,9 @@ from proto import auth_pb2
 
 
 class TestLoginSucesso:
-    def test_credenciais_validas_retorna_tokens(self, grpc_stub):
+    def test_credenciais_validas_retorna_tokens(self, grpc_stub, real_user):
         response = grpc_stub.Login(
-            auth_pb2.Credentials(username="user", password="senha123")
+            auth_pb2.Credentials(username=real_user["username"], password=real_user["password"])
         )
  
         assert response.access_token != ""
@@ -23,24 +23,24 @@ class TestLoginSucesso:
 
 
 class TestLoginFalha:
-    def test_senha_incorreta_retorna_unauthenticated(self, grpc_stub):
+    def test_senha_incorreta_retorna_unauthenticated(self, grpc_stub, real_user):
         with pytest.raises(grpc.RpcError) as exc_info:
-            grpc_stub.Login(auth_pb2.Credentials(username="user", password="errada"))
+            grpc_stub.Login(auth_pb2.Credentials(username=real_user["username"], password="errada"))
  
         assert exc_info.value.code() == grpc.StatusCode.UNAUTHENTICATED
 
 
-    def test_username_vazio_retorna_invalid_argument(self, grpc_stub):
+    def test_username_vazio_retorna_invalid_argument(self, grpc_stub, real_user):
         with pytest.raises(grpc.RpcError) as exc_info:
-            grpc_stub.Login(auth_pb2.Credentials(username="", password="senha123"))
+            grpc_stub.Login(auth_pb2.Credentials(username="", password=real_user["password"]))
  
         assert exc_info.value.code() == grpc.StatusCode.INVALID_ARGUMENT
 
 
 class TestLogout:
-    def test_logout_invalida_refresh_token(self, grpc_stub):
+    def test_logout_invalida_refresh_token(self, grpc_stub, real_user):
         login = grpc_stub.Login(
-            auth_pb2.Credentials(username="user", password="senha123")
+            auth_pb2.Credentials(username=real_user["username"], password=real_user["password"])
         )
  
         grpc_stub.Logout(auth_pb2.LogoutRequest(refresh_token=login.refresh_token))
@@ -63,13 +63,13 @@ class TestLogout:
 
 
 class TestGenerateRefreshToken:
-    def test_generateRefreshToken_success(self, grpc_stub):
+    def test_generateRefreshToken_success(self, grpc_stub, real_user):
         login = grpc_stub.Login(
-            auth_pb2.Credentials(username="user", password="senha123")
+            auth_pb2.Credentials(username=real_user["username"], password=real_user["password"])
         )
         assert login.access_token != ""
         payload = jwt.decode(login.refresh_token, SECRET, algorithms=["HS256"])
-        assert payload.get("username") == "user"
+        assert payload.get("username") == real_user["username"]
         assert payload.get("exp") > int(time.time()) + (60*60*23)
         
         refreshed = grpc_stub.RefreshToken(
@@ -83,9 +83,9 @@ class TestGenerateRefreshToken:
         assert payload["PARTIAL"] is False
         assert payload["exp"] > int(time.time())+(10*60)
     
-    def test_generateRefreshToken_Fail_Loged_out(self, grpc_stub):
+    def test_generateRefreshToken_Fail_Loged_out(self, grpc_stub, real_user):
         login = grpc_stub.Login(
-            auth_pb2.Credentials(username="user", password="senha123")
+            auth_pb2.Credentials(username=real_user["username"], password=real_user["password"])
         )
 
         grpc_stub.Logout(auth_pb2.LogoutRequest(refresh_token=login.refresh_token))
@@ -97,13 +97,13 @@ class TestGenerateRefreshToken:
         assert exec_er.value.code() == grpc.StatusCode.UNAUTHENTICATED
 
 class TestFluxoCompleto:
-    def test_login_refresh_logout_refresh_novamente(self, grpc_stub):
+    def test_login_refresh_logout_refresh_novamente(self, grpc_stub, real_user):
         """
         Simula o ciclo de vida real de uma sessão:
         login -> usa refresh -> desloga -> refresh deve falhar.
         """
         login = grpc_stub.Login(
-            auth_pb2.Credentials(username="user", password="senha123")
+            auth_pb2.Credentials(username=real_user["username"], password=real_user["password"])
         )
         assert login.access_token != ""
  

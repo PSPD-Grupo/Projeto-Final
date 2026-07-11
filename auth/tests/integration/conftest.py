@@ -38,10 +38,10 @@ def user_repository():
 # Fixtures de infraestrutura gRPC
 # ---------------------------------------------------------------------------
 @pytest.fixture(scope="function")
-def grpc_server(user_repository):
+def grpc_server(dbConn):
     """Sobe um servidor gRPC real numa porta livre, isolado por teste."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=4))
-    servicer = AuthService(user_repository=user_repository)
+    servicer = AuthService(user_repository=dbConn)
     auth_pb2_grpc.add_AuthServicer_to_server(servicer, server)
 
     port = server.add_insecure_port("localhost:0")

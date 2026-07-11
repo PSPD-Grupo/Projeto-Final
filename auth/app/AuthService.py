@@ -20,7 +20,7 @@ SECRET = os.getenv('SECRET')
 
 
 class AuthService(auth_pb2_grpc.AuthServicer):
-    def __init__(self, user_repository: InMemoryUserRepository = None):
+    def __init__(self, user_repository: MemoryInterface = None):
         # Injeção de dependência: facilita trocar por um repo real
         # (Postgres, Redis, etc.) em produção e por um fake nos testes.
         self._repo = user_repository or InMemoryUserRepository()
@@ -42,8 +42,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
         if not isOk:
             context.abort(grpc.StatusCode.UNAUTHENTICATED, "usuário ou senha errado")
             return auth_pb2.LoginResponse()
-        self._repo.login(request.username)
-        access_token, access_expires_at = self._generateAccessToken(self._repo[request.username])
+        access_token, access_expires_at = self._generateAccessToken(self._repo.getPermissions(request.username))
         if access_token == "" or access_expires_at == 0:
             context.abort(grpc.StatusCode.INTERNAL, "usuário sem permissão")
             return auth_pb2.LoginResponse()
@@ -75,11 +74,11 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             return auth_pb2.RefresResponse()
 
         username = payload.get("username")
-        if not username or not self._repo.check_user_exists(username) or not self._repo.isLoged_in(username):
+        if not username or not self._repo.check_user_exists(username) or request.refresh_token in self._revoked_refresh_tokens:
             context.abort(grpc.StatusCode.UNAUTHENTICATED, "refresh token inválido")
             return auth_pb2.RefresResponse()
 
-        access_token, expires_at = self._generateAccessToken(self._repo[username])
+        access_token, expires_at = self._generateAccessToken(self._repo.getPermissions(username))
         return auth_pb2.RefresResponse(access_token=access_token, expires_at=expires_at)
     
     def Logout(self, request, context):
@@ -93,7 +92,6 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             return auth_pb2.LogoutRequest()
 
         if request.refresh_token:
-            self._repo.logout(payload.get("username"))
             self._revoked_refresh_tokens.add(request.refresh_token)
         return auth_pb2.LogoutResponse()
     
@@ -116,8 +114,6 @@ class AuthService(auth_pb2_grpc.AuthServicer):
     def _generateRefreshToken(self, username) -> tuple[str, int]:
         if not self._repo.check_user_exists(username):
             raise UserNotFoundError(username)
-        if not self._repo.isLoged_in(username):
-            raise PermissionError()
         expires_at = int(time.time())+REFRESH_TOKEN_TLL_SECCOND
         encoded = jwt.encode({"username":username, "exp":expires_at}, SECRET, algorithm="HS256")
 

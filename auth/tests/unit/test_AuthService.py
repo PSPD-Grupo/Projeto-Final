@@ -1,5 +1,5 @@
 from app.AuthService import SECRET
-from app.Memory import UserNotFoundError
+from app.MemoryInterface import UserNotFoundError
 import pytest
 import jwt
 import time 
@@ -47,8 +47,5 @@ class TestGenerateRefreshToken:
         with pytest.raises(UserNotFoundError):
             token, expires_at = auth_service._generateRefreshToken("")
     
-    def test_GenerateRefreshToken_Fail_UserNotLogded_in(self, auth_service):
-        with pytest.raises(PermissionError):
-            token, expires_at = auth_service._generateRefreshToken("user")
 
 

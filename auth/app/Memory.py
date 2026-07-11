@@ -1,13 +1,14 @@
+import sys, os
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
+
+from app.MemoryInterface import *
 
 
-class UserNotFoundError(Exception):
-    """Levantada quando um username não existe no repositório."""
-    def __init__(self, username: str):
-        self.username = username
-        super().__init__(f"usuário '{username}' não encontrado")
 
 
-class InMemoryUserRepository:
+class InMemoryUserRepository(MemoryInterface):
     """Repositório simples em memória, só para exemplo/testes."""
  
     def __init__(self):
@@ -21,6 +22,9 @@ class InMemoryUserRepository:
         self._loged_in[username] = False
  
     def __getitem__(self, username):
+        return self.permission[username]
+
+    def getPermissions(self, username):
         return self.permission[username]
  
     def check_credentials(self, username: str, password: str) -> bool:

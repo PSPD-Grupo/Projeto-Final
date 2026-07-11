@@ -109,3 +109,8 @@ except jwt.InvalidTokenError:
 
 Atualmente, a conexão com um banco de dados real ainda não está implementada.
 Para permitir o funcionamento do serviço em ambiente de desenvolvimento e testes, foi criada a classe [app/Memory.py](app/Memory.py) como solução temporária, usando uma implementação em memória para armazenar usuários e estado de login.
+
+
+psql -h localhost -p 5432 -U postgres -d postgres -f ./createdb.sql && psql -h localhost -p 5432 -U postgres -d hospital -f ./popula.sql
+
+Serviço de auth será um singleton service para manter o set dos refresh tokens não autorizados sem a necessidade de um reddis ou escrever isso no banco de dados.
