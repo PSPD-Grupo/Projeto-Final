@@ -1,8 +1,6 @@
 .venv/
 __pycache__/
 *.pyc
-proto/datatransform_pb2*.py
-proto/datatransform_pb2*.pyi
 .coverage
 htmlcov/
 *.egg-info/
