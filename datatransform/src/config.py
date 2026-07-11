@@ -1,7 +1,7 @@
 import os
 from dataclasses import dataclass
 
-@dataclass
+@dataclass(frozen=True)
 class Settings:
         grpc_port: int = int(os.getenv("GRPC_PORT", "50053"))
         metrics_port: int = int(os.getenv("METRICS_PORT", "9103"))

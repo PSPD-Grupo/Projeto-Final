@@ -7,5 +7,5 @@ services:
     environment:
       GRPC_PORT: "50053"
       METRICS_PORT: "9103"
-      JWT_SECRET: ${JWT_SECRET}
-      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT}
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
