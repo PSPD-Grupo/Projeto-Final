@@ -7,6 +7,7 @@ WORKDIR /app
 
 COPY ./app /app/app/
 COPY ./proto /app/proto
+COPY ./.env_docker /app/.env
 COPY ./requirements.txt /app/
 
 
