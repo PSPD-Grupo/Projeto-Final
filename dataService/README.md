@@ -1,13 +1,13 @@
 # Patient Data Service
 
-Microservico Python para consulta de dados de pacientes no PostgreSQL da disciplina.
+Microserviçoo para consulta de dados de pacientes no PostgreSQL
 
 Ele expoe:
 
 - servidor gRPC para o API Gateway;
 - servidor FastAPI apenas para health/readiness;
 - acesso ao banco via variaveis de ambiente;
-- autorizacao de dominio baseada no contexto repassado pelo Gateway.
+- autorização de dominio baseada no contexto repassado pelo Gateway.
 
 ## Arquitetura
 
@@ -34,14 +34,14 @@ pacientes. Os demais usuarios so consultam pacientes com vinculo ativo em
 
 ## Configuracao
 
-Copie `.env.example` para `.env` e ajuste:
+Copie a `.env.example` para `.env` e faça os ajustes, por exemplo:
 
 ```text
-DB_HOST=192.168.122.1
-DB_PORT=5432
-DB_NAME=pseudopep_g08
+DB_HOST=192.168.500000.5
+DB_PORT=948732984732
+DB_NAME=pseudopep_g08875648736
 DB_USER=grupo08_user
-DB_PASSWORD=123@g08
+DB_PASSWORD=coxinha123
 ```
 
 ## Executando localmente
@@ -92,7 +92,7 @@ docker build -t patient-data-service .
 docker run --env-file .env -p 50051:50051 -p 8080:8080 patient-data-service
 ```
 
-## Observacao sobre seguranca
+## Observaçao sobre segurança!!!!!!!
 
 Este microservico nao valida o JWT diretamente. A autenticacao principal fica
 no API Gateway/Auth Service. Mesmo assim, ele aplica uma regra minima de

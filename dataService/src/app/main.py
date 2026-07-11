@@ -24,7 +24,7 @@ async def serve() -> None:
 
     grpc_server = grpc.aio.server()
     repository = PatientRepository(database)
-    register_patient_data_service(grpc_server, repository)
+    register_patient_data_service(grpc_server, repository, settings)
     grpc_server.add_insecure_port(settings.grpc_bind_address)
 
     http_app = create_http_app(database)

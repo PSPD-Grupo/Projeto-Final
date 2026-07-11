@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     db_pool_min_size: int = 1
     db_pool_max_size: int = 10
 
+    pseudonym_salt: str = "change-me-in-production"
     log_level: str = "INFO"
 
     model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
