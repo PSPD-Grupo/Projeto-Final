@@ -11,19 +11,23 @@ if __package__ in {None, ""}:
 
 from app.AuthService import AuthService
 from app.Memory import InMemoryUserRepository
+from app.DataBase import DataBaseConnection
 from proto import auth_pb2_grpc
 
-
+NO_DB = False
 
 def serve(port: str = "50051"):
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
 
-    repo = InMemoryUserRepository()
-    repo.create_user(
-        username="user",
-        password="senha123",
-        permission=["FULL"]
-    )
+    if NO_DB:
+        repo = InMemoryUserRepository()
+        repo.create_user(
+            username="user",
+            password="senha123",
+            permission=["FULL"]
+        )
+    else:
+        repo = DataBaseConnection()
 
     auth_pb2_grpc.add_AuthServicer_to_server(
         AuthService(user_repository=repo),
