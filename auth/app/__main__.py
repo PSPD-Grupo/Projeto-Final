@@ -1,12 +1,18 @@
 import logging
 import signal
+import sys
 from concurrent import futures
+from pathlib import Path
 
 import grpc
+
+if __package__ in {None, ""}:
+    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from app.AuthService import AuthService
 from app.Memory import InMemoryUserRepository
 from proto import auth_pb2_grpc
+
 
 
 def serve(port: str = "50051"):

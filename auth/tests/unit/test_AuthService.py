@@ -1,4 +1,4 @@
-from app.Memory import SECRET 
+from app.AuthService import SECRET
 from app.Memory import UserNotFoundError
 import pytest
 import jwt

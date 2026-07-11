@@ -6,7 +6,7 @@ precisa garantir em contrato (status codes corretos, mensagens, etc.)
 """
 import grpc, jwt
 import pytest , time
-from app.Memory import SECRET
+from app.AuthService import SECRET
 
 from proto import auth_pb2
 

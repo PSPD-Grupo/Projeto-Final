@@ -9,11 +9,13 @@ from app.Memory import *
 from proto import auth_pb2_grpc, auth_pb2
 
 import time, grpc, jwt
-
+from dotenv import load_dotenv, dotenv_values 
+# loading variables from .env file
+load_dotenv() 
 
 ACCESS_TOKEN_TLL_SECCOND = 30*60
 REFRESH_TOKEN_TLL_SECCOND = 60*60*24
-SECRET = os.environ(['SECRET'])
+SECRET = os.getenv('SECRET')
 
 
 
