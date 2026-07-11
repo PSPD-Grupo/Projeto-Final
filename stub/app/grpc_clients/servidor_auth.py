@@ -31,7 +31,23 @@ class AuthClient:
         
 
     def refreshToken(self, token):
-        pass
-
+        with grpc.insecure_channel(self.target) as channel:
+            stub = auth_pb2_grpc.AuthStub(channel)
+            try:
+                response = stub.RefreshToken(auth_pb2.RefreshRequest(refresh_token=token))
+                
+                return {
+                    "access_token": response.access_token,
+                    "expires_at": response.expires_at,
+                }
+            except grpc.RpcError as e:
+                if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+                    raise HTTPException(status_code=406, detail="Token inválido")
+                elif e.code() == grpc.StatusCode.UNAVAILABLE:
+                    raise HTTPException(status_code=503, detail="Serviço de autenticação indisponível")
+                else:
+                    print("Erro inesperado no gRPC durante login")
+                    raise HTTPException(status_code=500, detail="Erro interno no servidor")
+        
     def logout(self, token):
         pass

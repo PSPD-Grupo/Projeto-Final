@@ -1,7 +1,7 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from pydantic import BaseModel
+from pydantic import BaseModel, SecretStr
 import grpc.aio
 import asyncio
 import time
@@ -21,6 +21,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+class LoginRequest(BaseModel):
+    username: str
+    password: SecretStr  # evita que a senha apareça em logs/repr acidentalmente
+
 @app.post("/auth/login")
-def login(username:str, password:str):
-    return AuthClient().login(username=username, password=password)
+def login(credentials: LoginRequest):
+    return AuthClient().login(username=credentials.username,
+                              password=credentials.password.get_secret_value())
+
+
+@app.post("/auth/refresh_token")
+def refresh_token(token):
+    return AuthClient().refreshToken(
+        token=token
+    )
