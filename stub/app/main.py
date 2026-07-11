@@ -36,3 +36,9 @@ def refresh_token(token):
     return AuthClient().refreshToken(
         token=token
     )
+
+@app.post("/auth/logout")
+def logout(token):
+    return AuthClient().logout(
+        token=token
+    )

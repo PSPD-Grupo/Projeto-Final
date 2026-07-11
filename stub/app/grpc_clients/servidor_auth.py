@@ -43,6 +43,8 @@ class AuthClient:
             except grpc.RpcError as e:
                 if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
                     raise HTTPException(status_code=406, detail="Token inválido")
+                elif e.code() == grpc.StatusCode.UNAUTHENTICATED:
+                    raise HTTPException(status_code=406, detail="Token inválido")
                 elif e.code() == grpc.StatusCode.UNAVAILABLE:
                     raise HTTPException(status_code=503, detail="Serviço de autenticação indisponível")
                 else:
@@ -50,4 +52,21 @@ class AuthClient:
                     raise HTTPException(status_code=500, detail="Erro interno no servidor")
         
     def logout(self, token):
-        pass
+        with grpc.insecure_channel(self.target) as channel:
+            stub = auth_pb2_grpc.AuthStub(channel)
+            try:
+                response = stub.Logout(auth_pb2.LogoutRequest(refresh_token=token))
+                return 
+            except grpc.RpcError as e:
+                print('-='*50)
+                print(e.code())
+                print('-='*50)
+                if e.code() == grpc.StatusCode.INVALID_ARGUMENT:
+                    raise HTTPException(status_code=406, detail="Token inválido")
+                elif e.code() == grpc.StatusCode.UNAUTHENTICATED:
+                    raise HTTPException(status_code=406, detail="Token inválido")
+                elif e.code() == grpc.StatusCode.UNAVAILABLE:
+                    raise HTTPException(status_code=503, detail="Serviço de autenticação indisponível")
+                else:
+                    print("Erro inesperado no gRPC durante login")
+                    raise HTTPException(status_code=500, detail="Erro interno no servidor")
