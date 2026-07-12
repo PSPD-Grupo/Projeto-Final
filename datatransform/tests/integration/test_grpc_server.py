@@ -76,3 +76,22 @@ def test_aggregate_requer_nivel_aggregated(grpc_channel):
     with pytest.raises(grpc.RpcError) as exc:
         stub.TransformAggregate(request, metadata=_auth_metadata(make_token(full=True)))
     assert exc.value.code() == grpc.StatusCode.PERMISSION_DENIED
+
+def test_transform_token_expirado_retorna_reason_correto(grpc_channel):
+    stub = datatransform_pb2_grpc.DataTransformStub(grpc_channel)
+    request = datatransform_pb2.TransformRequest()
+    expired = make_token(full=True, expired=True)
+    with pytest.raises(grpc.RpcError) as exc:
+        stub.Transform(request, metadata=_auth_metadata(expired))
+    assert exc.value.code() == grpc.StatusCode.UNAUTHENTICATED
+    reason = dict(exc.value.trailing_metadata() or []).get("error-reason")
+    assert reason == "TOKEN_EXPIRED"
+
+
+def test_transform_sem_token_retorna_reason_missing(grpc_channel):
+    stub = datatransform_pb2_grpc.DataTransformStub(grpc_channel)
+    request = datatransform_pb2.TransformRequest()
+    with pytest.raises(grpc.RpcError) as exc:
+        stub.Transform(request)
+    reason = dict(exc.value.trailing_metadata() or []).get("error-reason")
+    assert reason == "TOKEN_MISSING"

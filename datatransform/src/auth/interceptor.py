@@ -1,13 +1,9 @@
 import grpc
 
-from auth.jwt_decoder import decode_token, InvalidTokenError
+from auth.jwt_decoder import decode_token, TokenExpiredError, TokenMalformedError
 from auth.access_level import resolve_access_level, NoAccessLevelError
 
-
 class _ContextWrapper:
-    """Encapsula o context original só pra pendurar o access_level nele,
-    sem precisar mudar a assinatura dos métodos do servicer."""
-
     def __init__(self, context, access_level):
         self._context = context
         self.access_level = access_level
@@ -16,22 +12,14 @@ class _ContextWrapper:
         return getattr(self._context, name)
 
 
-def _unauthenticated(message):
+def _abort_handler(code, message, reason):
     def handler(request, context):
-        context.abort(grpc.StatusCode.UNAUTHENTICATED, message)
-    return grpc.unary_unary_rpc_method_handler(handler)
-
-
-def _permission_denied(message):
-    def handler(request, context):
-        context.abort(grpc.StatusCode.PERMISSION_DENIED, message)
+        context.set_trailing_metadata((("error-reason", reason),))
+        context.abort(code, message)
     return grpc.unary_unary_rpc_method_handler(handler)
 
 
 class JwtAuthInterceptor(grpc.ServerInterceptor):
-    """Extrai o JWT do header 'authorization', valida e resolve o
-    nível de acesso ANTES de qualquer RPC ser executada."""
-
     def __init__(self, jwt_secret: str):
         self._secret = jwt_secret
 
@@ -39,17 +27,22 @@ class JwtAuthInterceptor(grpc.ServerInterceptor):
         token = self._extract_token(handler_call_details.invocation_metadata)
 
         if token is None:
-            return _unauthenticated("token de autenticação ausente")
+            return _abort_handler(
+                grpc.StatusCode.UNAUTHENTICATED,
+                "token de autenticação ausente",
+                "TOKEN_MISSING",
+            )
 
         try:
             claims = decode_token(token, self._secret)
             access_level = resolve_access_level(claims)
-        except InvalidTokenError as e:
-            return _unauthenticated(str(e))
+        except TokenExpiredError as e:
+            return _abort_handler(grpc.StatusCode.UNAUTHENTICATED, str(e), "TOKEN_EXPIRED")
+        except TokenMalformedError as e:
+            return _abort_handler(grpc.StatusCode.UNAUTHENTICATED, str(e), "TOKEN_INVALID")
         except NoAccessLevelError as e:
-            return _permission_denied(str(e))
+            return _abort_handler(grpc.StatusCode.PERMISSION_DENIED, str(e), "NO_ACCESS_LEVEL")
 
-        # Segue para o método real, mas troca o context por um que carrega o nível
         handler = continuation(handler_call_details)
         return self._wrap_handler(handler, access_level)
 
