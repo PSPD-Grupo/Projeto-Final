@@ -1,0 +1,11 @@
+services:
+  data-transform:
+    build: .
+    ports:
+      - "50053:50053"
+      - "9103:9103"
+    environment:
+      GRPC_PORT: "50053"
+      METRICS_PORT: "9103"
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
