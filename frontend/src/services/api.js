@@ -12,7 +12,7 @@ import {
 } from '../mockData';
 
 // Configurable API Gateway URL for Live Mode
-let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8080';
+let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8000';
 let IS_MOCK_MODE = false; // Default to true for easy demo on GitHub Pages
 
 export const getApiConfig = () => ({
@@ -110,7 +110,13 @@ export const api = {
         if (response.status === 403) throw new Error('Acesso negado');
         throw new Error('Erro ao buscar pacientes');
       }
-      return await response.json();
+      const data = await response.json();
+      return data.map(p => ({
+        ...p,
+        id: p.patient_ref || p.id,
+        name: p.full_name || p.name || p.initials || 'Paciente Oculto',
+        gender: p.gender === 'M' ? 'male' : p.gender === 'F' ? 'female' : p.gender
+      }));
     }
 
     // Mock Mode Authorization & Filtering Logic
@@ -165,7 +171,34 @@ export const api = {
         if (response.status === 403) throw new Error('Acesso negado');
         throw new Error('Erro ao buscar prontuário');
       }
-      return await response.json(); // returns { patient, encounters, events }
+      const data = await response.json();
+      return {
+        patient: {
+          ...data.patient,
+          id: data.patient?.patient_ref || data.patient?.id,
+          name: data.patient?.full_name || data.patient?.name || data.patient?.initials || 'Paciente Oculto',
+          gender: data.patient?.gender === 'M' ? 'male' : data.patient?.gender === 'F' ? 'female' : data.patient?.gender
+        },
+        encounters: (data.encounters || []).map(e => ({
+          ...e,
+          id: e.encounter_id || e.id,
+          tipo: e.encounter_type || e.tipo,
+          setor: e.department || e.setor,
+          data_inicio: e.start_date || e.data_inicio,
+          data_fim: e.end_date || e.data_fim || 'Atual'
+        })),
+        events: (data.events || []).map(e => ({
+          ...e,
+          id_evento: e.event_id || e.id_evento,
+          id_atendimento: e.encounter_id || e.id_atendimento,
+          tipo: e.event_type === 'CONDITION' ? 'Condição' : e.event_type === 'OBSERVATION' ? 'Observação' : e.event_type === 'MEDICATION' ? 'Medicação' : e.event_type || e.tipo,
+          codigo: e.code || e.codigo,
+          descricao: e.description || e.descricao,
+          data_evento: e.event_date || e.data_evento,
+          valor: e.value || e.valor,
+          unidade: e.unit || e.unidade
+        }))
+      };
     }
 
     // Mock Mode detailed verification & masking
@@ -216,7 +249,31 @@ export const api = {
         if (response.status === 403) throw new Error('Acesso negado (Projeto não aprovado/vigente)');
         throw new Error('Erro ao buscar dados do coorte');
       }
-      return await response.json();
+      const data = await response.json();
+      
+      const menPct = (data.gender_distribution || []).find(g => g.label === 'M' || g.label === 'male')?.percentage || 0;
+      const womenPct = (data.gender_distribution || []).find(g => g.label === 'F' || g.label === 'female')?.percentage || 0;
+      
+      const ageBands = (data.age_distribution || []).map(a => ({
+        label: a.label,
+        value: Math.round(a.percentage)
+      }));
+      
+      const departments = (data.department_distribution || []).map(d => ({
+        name: d.label,
+        pct: Math.round(d.percentage)
+      }));
+
+      return {
+        totalCases: data.total_patients || 0,
+        demographics: {
+          men: Math.round(menPct),
+          women: Math.round(womenPct),
+          ageBands: ageBands.length ? ageBands : [{ label: 'N/A', value: 0 }]
+        },
+        departments: departments.length ? departments : [{ name: 'N/A', pct: 0 }],
+        anonymizedPatients: [] 
+      };
     }
 
     // Mock Mode Researcher rules
@@ -249,7 +306,14 @@ export const api = {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       if (!response.ok) throw new Error('Erro ao buscar projetos');
-      return await response.json();
+      const data = await response.json();
+      return data.map(p => ({
+        id_projeto: p.project_id,
+        titulo: p.title,
+        pesquisador: p.researcher_username,
+        codigo_condicao: p.target_condition_code,
+        status: p.status === 'APPROVED' ? 'Aprovado' : p.status
+      }));
     }
 
     const decoded = parseJwt(token);

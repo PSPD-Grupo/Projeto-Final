@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: auth-service
     ports:
-      - "50051:50051"
+      - "50054:50051"
     working_dir: /app
     command: python -m app
     env_file:
