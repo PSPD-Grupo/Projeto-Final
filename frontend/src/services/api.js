@@ -12,8 +12,8 @@ import {
 } from '../mockData';
 
 // Configurable API Gateway URL for Live Mode
-let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8080/api';
-let IS_MOCK_MODE = localStorage.getItem('IS_MOCK_MODE') !== 'false'; // Default to true for easy demo on GitHub Pages
+let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8080';
+let IS_MOCK_MODE = false; // Default to true for easy demo on GitHub Pages
 
 export const getApiConfig = () => ({
   baseUrl: API_BASE_URL,
@@ -35,7 +35,7 @@ const parseJwt = (token) => {
   try {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
       return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
     }).join(''));
     return JSON.parse(jsonPayload);
@@ -70,7 +70,21 @@ export const api = {
           body: JSON.stringify({ username, password })
         });
         if (!response.ok) throw new Error('Credenciais inválidas');
-        return await response.json(); // returns { token, user }
+
+        const data = await response.json();
+        // Real API returns { access_token, refresh_token, expires_at }
+        const token = data.access_token;
+        const decoded = parseJwt(token);
+        if (!decoded) throw new Error('Token inválido recebido do servidor');
+
+        // Build the user object from the token payload
+        const user = {
+          username: decoded.sub,
+          name: decoded.name || decoded.sub, // Fallback if name is not in JWT
+          role: decoded.role || 'MEDICO'
+        };
+
+        return { token, user };
       } catch (err) {
         throw new Error(err.message || 'Falha ao conectar ao servidor de autenticação');
       }
@@ -109,7 +123,7 @@ export const api = {
       const assignedIds = MOCK_ASSIGNMENTS
         .filter(a => a.caregiver === username && a.type === 'MEDICO' && a.status === 'ATIVO')
         .map(a => a.id_paciente);
-      
+
       return Object.values(MOCK_PATIENTS).filter(p => assignedIds.includes(p.id));
     }
 
@@ -120,7 +134,7 @@ export const api = {
         .map(a => a.id_paciente);
 
       const rawPatients = Object.values(MOCK_PATIENTS).filter(p => assignedIds.includes(p.id));
-      
+
       // Data Transform Service Action: Mask sensitive fields!
       return rawPatients.map(p => ({
         ...p,
@@ -160,10 +174,10 @@ export const api = {
     const { sub: username, role } = decoded;
 
     // Check relationship
-    const hasAssignment = MOCK_ASSIGNMENTS.some(a => 
-      a.caregiver === username && 
-      a.id_paciente === patientId && 
-      a.status === 'ATIVO' && 
+    const hasAssignment = MOCK_ASSIGNMENTS.some(a =>
+      a.caregiver === username &&
+      a.id_paciente === patientId &&
+      a.status === 'ATIVO' &&
       a.type === role
     );
 
@@ -259,7 +273,7 @@ export const api = {
     if (list && list[id]) {
       return list[id];
     }
-    
+
     // Otherwise fallback/generate a minimal FHIR representation dynamically
     if (resourceType === 'Patient') {
       const p = MOCK_PATIENTS[id];
@@ -273,7 +287,7 @@ export const api = {
         };
       }
     }
-    
+
     // Default dynamic mock FHIR
     const event = MOCK_CLINICAL_EVENTS.find(e => e.id_evento === id);
     if (event) {
@@ -297,7 +311,7 @@ export const api = {
         };
       }
     }
-    
+
     throw new Error(`Recurso FHIR '${resourceType}/${id}' não disponível.`);
   }
 };
