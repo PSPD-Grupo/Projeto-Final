@@ -4,7 +4,7 @@ import MedicoView from './components/MedicoView';
 import StagiarioView from './components/EstagiarioView';
 import PesquisadorView from './components/PesquisadorView';
 import ObservabilityView from './components/ObservabilityView';
-import PresentationView from './components/PresentationView';
+
 import { 
   LogOut, 
   Settings, 
@@ -14,7 +14,6 @@ import {
   Moon, 
   Lock, 
   Stethoscope, 
-  Presentation,
   KeyRound
 } from 'lucide-react';
 
@@ -26,7 +25,7 @@ const App = () => {
   const [apiConfig, setApiConfigState] = useState(getApiConfig());
   
   // Public Landing vs Login toggle
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
 
   // Login inputs
   const [loginUsername, setLoginUsername] = useState('');
@@ -136,18 +135,7 @@ const App = () => {
                 {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
               </button>
 
-              {/* Login / Presentation Mode Toggle */}
-              {showLogin ? (
-                <button onClick={() => setShowLogin(false)} className="btn btn-outline" style={{ fontSize: '0.85rem' }}>
-                  <Presentation size={15} />
-                  Ver Apresentação
-                </button>
-              ) : (
-                <button onClick={() => setShowLogin(true)} className="btn btn-primary" style={{ fontSize: '0.85rem' }}>
-                  <KeyRound size={15} />
-                  Acessar Portal Clínico
-                </button>
-              )}
+              {/* Removed Presentation Toggle */}
             </div>
           </div>
 
@@ -163,13 +151,7 @@ const App = () => {
             width: '100%',
             margin: '0 auto'
           }}>
-            {!showLogin ? (
-              /* Public Slideshow */
-              <div style={{ width: '100%', maxWidth: '850px' }}>
-                <PresentationView />
-              </div>
-            ) : (
-              /* Login Form Panel */
+            {/* Removed Presentation View */}
               <div style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
@@ -291,7 +273,6 @@ const App = () => {
                   </div>
                 </div>
               </div>
-            )}
           </div>
         </div>
       ) : (

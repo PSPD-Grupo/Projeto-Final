@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório do Projeto - Kubernetes & Observabilidade</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Outfit:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Background Animation -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <nav class="sidebar glass-panel">
+        <div class="sidebar-header">
+            <h2><i class="fa-solid fa-network-wired"></i> Projeto K8S</h2>
+        </div>
+        <ul class="nav-links">
+            <li><a href="#dados" class="active"><i class="fa-solid fa-users"></i> Identificação</a></li>
+            <li><a href="#introducao"><i class="fa-solid fa-book-open"></i> Introdução</a></li>
+            <li><a href="#metodologia"><i class="fa-solid fa-sitemap"></i> Metodologia</a></li>
+            <li><a href="#kubernetes"><i class="fa-solid fa-server"></i> Kubernetes</a></li>
+            <li><a href="#fases"><i class="fa-solid fa-list-check"></i> 5 Fases</a></li>
+            <li><a href="#conclusao"><i class="fa-solid fa-flag-checkered"></i> Conclusão</a></li>
+            <li><a href="#referencias"><i class="fa-solid fa-quote-right"></i> Referências</a></li>
+            <li><a href="#anexos"><i class="fa-solid fa-paperclip"></i> Anexos</a></li>
+        </ul>
+    </nav>
+
+    <main class="content">
+        <header class="glass-panel animate-fade-in" id="dados">
+            <div class="header-badge">Relatório Final</div>
+            <h1 class="gradient-text">Monitoramento e Observabilidade de Aplicações em Clusters K8S</h1>
+            
+            <div class="info-grid">
+                <div class="info-card">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                    <div>
+                        <h3>Curso</h3>
+                        <p>Engenharia de Software (FGA - UnB)</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                    <div>
+                        <h3>Disciplina/Turma</h3>
+                        <p>Programação para Sistemas Paralelos e Distribuídos (PSPD)</p>
+                    </div>
+                </div>
+                <div class="info-card">
+                    <i class="fa-regular fa-calendar"></i>
+                    <div>
+                        <h3>Data</h3>
+                        <p>Julho de 2026</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="team-section">
+                <h3><i class="fa-solid fa-user-group"></i> Equipe (Grupo 08)</h3>
+                <ul class="team-list">
+                    <li>Milena Baruc Rodrigues Morais - Matrícula: 211062339</li>
+                    <li>Pedro Fonseca Cruz - Matrícula: 212005444</li>
+                    <li>Daniel dos Santos Barros de Sousa - Matrícula: 211030980</li>
+                    <li>Gabriel Freitas Balbino - Matrícula: 180075462</li>
+                </ul>
+            </div>
+        </header>
+
+        <section id="introducao" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-book-open text-accent"></i> Introdução</h2>
+            <p>
+                Este relatório documenta a concepção, desenvolvimento e implantação de uma arquitetura de microsserviços voltada para o setor de saúde, simulando um Prontuário Eletrônico do Paciente (PEP). A aplicação foi projetada para obedecer ao padrão FHIR e utiliza comunicação síncrona via gRPC entre os serviços internos, com um API Gateway (Stub) expondo rotas REST para o frontend.
+            </p>
+            <p>
+                O objetivo central do trabalho é realizar o deploy da aplicação em um cluster Kubernetes, garantindo alta disponibilidade, tolerância a falhas e escalabilidade sob demanda. O relatório aborda não apenas a configuração de infraestrutura, mas também testes exaustivos de carga, validação do Horizontal Pod Autoscaler (HPA) e a implementação de uma camada de observabilidade com Prometheus e Grafana para monitoramento em tempo real.
+            </p>
+        </section>
+
+        <section id="metodologia" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-sitemap text-accent"></i> Metodologia</h2>
+            <p>
+                Para a execução das tarefas, a equipe adotou uma abordagem ágil adaptada, com divisões de responsabilidades claras e sprints curtas. Toda a comunicação inicial e as definições sobre o que cada membro deveria fazer ocorreram de forma rápida e dinâmica pelo WhatsApp. Para discussões mais técnicas, pareamentos (pair programming) e dúvidas mais complexas durante o desenvolvimento, utilizávamos o Discord. O controle de versão foi feito no GitHub, onde revisávamos o código de cada um.
+            </p>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h4>Encontro 1: Planejamento e Arquitetura</h4>
+                    <p>Definição das tecnologias (FastAPI, gRPC, PostgreSQL) e divisão dos microsserviços (Gateway, Auth, Patient Data, Data Transform).</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h4>Encontro 2: Configuração do Kubernetes</h4>
+                    <p>Desenvolvimento dos manifestos YAML (Deployments e Services) e configuração inicial do cluster local utilizando Minikube.</p>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-dot"></div>
+                    <h4>Encontro 3: Testes e Observabilidade</h4>
+                    <p>Integração com Prometheus, configuração do HPA e execução dos scripts de testes de carga para capturar os resultados analisados neste relatório.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="kubernetes" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-server text-accent"></i> Montagem do Kubernetes (Modo Cluster)</h2>
+            <p>
+                A montagem do cluster foi realizada em ambiente local utilizando o Minikube para emular um cluster completo. A infraestrutura foi definida de forma declarativa através de manifestos YAML. Os principais desafios enfrentados incluíram a correta orquestração de dependências (garantir que os bancos de dados subissem e ficassem saudáveis antes dos microsserviços) e a configuração das variáveis de ambiente via ConfigMaps e Secrets.
+            </p>
+            <p>
+                A comunicação interna foi resolvida através do DNS interno do Kubernetes (Services do tipo ClusterIP), enquanto o API Gateway foi exposto externamente via NodePort/LoadBalancer, permitindo ao Frontend React consumir a API unificada.
+            </p>
+        </section>
+
+        <section id="fases" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-list-check text-accent"></i> As Cinco Fases do Projeto</h2>
+            
+            <div class="phase-card">
+                <h3>1. Validação Funcional</h3>
+                <p>Foram realizados testes fim-a-fim interagindo com a interface gráfica. Com o frontend configurado para apontar para o Gateway, testamos a autenticação simulando diversos perfis (Médico, Estagiário e Pesquisador). O Gateway extraiu o JWT com sucesso, fez as validações necessárias e encaminhou a requisição via gRPC. A validação atestou que as regras de negócio de acesso (ex: Pesquisador consumindo dados pseudo-anonimizados pelo serviço Data Transform) operaram conforme o esperado.</p>
+            </div>
+
+            <div class="phase-card">
+                <h3>2. Testes de Carga (Stress Testing)</h3>
+                <p>Para os testes de carga, utilizamos a ferramenta K6. Foram modelados cenários de simulação de tráfego injetando 10, 50, 100, 500 e 1000 requisições simultâneas contra a rota de listagem de pacientes. Observamos que até 100 usuários virtuais o sistema respondeu com p95 &lt; 200ms. No cenário de 500 e 1000 usuários, notou-se degradação de performance e alguns timeouts por esgotamento de recursos no único Pod do Gateway, justificando a necessidade de replicação.</p>
+            </div>
+
+            <div class="phase-card">
+                <h3>3. Escalabilidade Horizontal</h3>
+                <p>Aplicando o comando <code>kubectl scale deployment api-gateway --replicas=3</code>, a carga foi distribuída entre três Pods. Ao reexecutar o teste com 500 usuários, o sistema recuperou a estabilidade e o tempo de resposta caiu significativamente, demonstrando que o gargalo computacional foi mitigado pela orquestração do Kubernetes aliada a serviços Stateless.</p>
+            </div>
+
+            <div class="phase-card">
+                <h3>4. Autoscaling (HPA)</h3>
+                <p>Foi configurado o Horizontal Pod Autoscaler limitando o uso de CPU a 70% da capacidade por Pod (Resource requests configurados adequadamente). Ao simular uma rampa agressiva de acessos, o HPA detectou a anomalia através do Metrics Server e instanciou Pods adicionais dinamicamente (de 1 para até 5 réplicas), sustentando a carga de forma autônoma. Após o fim do teste, os Pods foram terminados de forma gradual.</p>
+            </div>
+
+            <div class="phase-card">
+                <h3>5. Observabilidade</h3>
+                <p>Instrumentamos os microsserviços (como o Datatransform) para expor métricas Prometheus na porta 9103. No Kubernetes, foi feito o deploy do Prometheus para raspar esses dados e do Grafana para visualização. Criamos um dashboard focado no acompanhamento de Throughput (Requisições por Segundo), Latência de respostas gRPC e Taxa de Erros, permitindo visualizar de maneira clara o comportamento da aplicação sob estresse.</p>
+            </div>
+        </section>
+
+        <section id="conclusao" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-flag-checkered text-accent"></i> Conclusão</h2>
+            <p>
+                A experiência prática comprovou a robustez da arquitetura de microsserviços quando orquestrada adequadamente. O uso do gRPC otimizou a comunicação backend interna, reduzindo overhead em comparação ao REST, crucial em cenários de alta concorrência. As maiores dificuldades envolveram a curva de aprendizado inicial para configuração correta das redes no Kubernetes (Services e Ingress) e o ajuste fino do HPA. Concluímos que a infraestrutura implementada cumpre os requisitos de disponibilidade e escalabilidade.
+            </p>
+            
+            <h3 style="margin-top: 1.5rem;"><i class="fa-solid fa-comments"></i> Autoavaliação e Comentários Pessoais</h3>
+            
+            <div class="autoavaliação-grid">
+                <div class="aluno-card glass-panel-inner">
+                    <h4>Milena Baruc Rodrigues Morais</h4>
+                    <p><strong>Foco do trabalho:</strong> Desenvolvimento do Frontend React e ajustes de integração com o Gateway.</p>
+                    <p><strong>Aprendizados:</strong> Consolidação de conhecimentos em comunicação com microsserviços via API Gateway e tratamento dinâmico de interfaces baseadas em permissão (RBAC).</p>
+                    <div class="nota-badge">Autoavaliação: 10</div>
+                </div>
+
+                <div class="aluno-card glass-panel-inner">
+                    <h4>Pedro Fonseca Cruz</h4>
+                    <p><strong>Foco do trabalho:</strong> Arquitetura Kubernetes (YAMLs) e HPA.</p>
+                    <p><strong>Aprendizados:</strong> Compreensão profunda sobre a dinâmica de escalabilidade autônoma e os desafios de manter aplicações stateless.</p>
+                    <div class="nota-badge">Autoavaliação: 10</div>
+                </div>
+
+                <div class="aluno-card glass-panel-inner">
+                    <h4>Daniel dos Santos Barros de Sousa</h4>
+                    <p><strong>Foco do trabalho:</strong> Testes de carga com K6 e configuração de rotas e banco de dados no DataService.</p>
+                    <p><strong>Aprendizados:</strong> Como arquiteturas orientadas a eventos e serviços se comportam sob alto estresse de tráfego simultâneo.</p>
+                    <div class="nota-badge">Autoavaliação: 10</div>
+                </div>
+
+                <div class="aluno-card glass-panel-inner">
+                    <h4>Gabriel Freitas Balbino</h4>
+                    <p><strong>Foco do trabalho:</strong> Observabilidade (Grafana/Prometheus) e integração Auth.</p>
+                    <p><strong>Aprendizados:</strong> Aprendi a instrumentar métricas em aplicações Python e a traduzir dados brutos em gráficos visuais úteis para a tomada de decisão.</p>
+                    <div class="nota-badge">Autoavaliação: 10</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="referencias" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-quote-right text-accent"></i> Referências</h2>
+            <ul class="references-list">
+                <li>[1] Documentação oficial do Kubernetes. Disponível em: https://kubernetes.io/docs/</li>
+                <li>[2] Documentação do Prometheus. Disponível em: https://prometheus.io/docs/</li>
+                <li>[3] Documentação gRPC para Python. Disponível em: https://grpc.io/docs/languages/python/</li>
+                <li>[4] Padrão HL7 FHIR (Fast Healthcare Interoperability Resources). Disponível em: http://hl7.org/fhir/</li>
+            </ul>
+        </section>
+
+        <section id="anexos" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-paperclip text-accent"></i> Anexos</h2>
+            <p>
+                O código fonte completo deste projeto está versionado em nosso repositório no GitHub. Abaixo, destacamos a configuração central utilizada para o escalonamento horizontal autônomo do Gateway:
+            </p>
+            <!-- Exemplo de código -->
+            <pre><code># Exemplo de YAML HPA (Horizontal Pod Autoscaler)
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: api-gateway-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: api-gateway
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 70</code></pre>
+        </section>
+        
+        <footer>
+            <p>&copy; 2026 - Projeto Final PSPD. Feito com <i class="fa-solid fa-heart text-accent"></i> para a aprovação!</p>
+        </footer>
+    </main>
+
+    <script>
+        // Smooth scrolling e ativação da sidebar
+        const sections = document.querySelectorAll("section, header");
+        const navLi = document.querySelectorAll(".nav-links li a");
+
+        window.addEventListener("scroll", () => {
+            let current = "";
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute("id");
+                }
+            });
+
+            navLi.forEach((a) => {
+                a.classList.remove("active");
+                if (a.getAttribute("href") === `#${current}`) {
+                    a.classList.add("active");
+                }
+            });
+        });
+    </script>
+</body>
+</html>
