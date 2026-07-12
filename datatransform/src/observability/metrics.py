@@ -10,6 +10,5 @@ TRANSFORM_LATENCY = Histogram(
     "datatransform_latency_seconds", "Latência da transformação", ["rpc"]
 )
 
-
 def start_metrics_server(port: int):
     start_http_server(port)
