@@ -31,7 +31,7 @@ services:
       POSTGRES_USER: ${dbUser}
       POSTGRES_PASSWORD: ${dbPassword}
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./db/createdb.sql:/docker-entrypoint-initdb.d/01_createdb.sql:ro
