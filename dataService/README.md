@@ -60,8 +60,7 @@ Gere os arquivos Python do contrato gRPC, se quiser fazer isso manualmente:
 python -m grpc_tools.protoc -I proto --python_out=src/generated --grpc_python_out=src/generated proto/patient_data.proto
 ```
 
-O servico tambem tenta gerar esses arquivos automaticamente ao iniciar, caso
-eles ainda nao existam.
+O servico tambem tenta gerar esses arquivos automaticamente ao iniciar, caso eles ainda nao existam.
 
 Suba o servico:
 
@@ -72,8 +71,8 @@ python -m app.main
 
 Por padrao:
 
-- gRPC: `0.0.0.0:50051`
-- FastAPI health: `0.0.0.0:8080`
+- gRPC: `0.0.0.0:50052`
+- FastAPI health: `0.0.0.0:8081`
 
 ## Endpoints gRPC
 
@@ -88,8 +87,8 @@ Serviço: `patientdata.PatientDataService`
 ## Build Docker
 
 ```bash
-docker build -t patient-data-service .
-docker run --env-file .env -p 50051:50051 -p 8080:8080 patient-data-service
+docker build -t data-service .
+docker run --env-file .env -p 50052:50052 -p 8081:8081 data-service
 ```
 
 ## Observaçao sobre segurança!!!!!!!

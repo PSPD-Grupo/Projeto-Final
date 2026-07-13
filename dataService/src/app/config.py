@@ -9,9 +9,9 @@ class Settings(BaseSettings):
     app_env: str = "development"
 
     grpc_host: str = "0.0.0.0"
-    grpc_port: int = 50051
+    grpc_port: int = 50052
     http_host: str = "0.0.0.0"
-    http_port: int = 8080
+    http_port: int = 8081
 
     db_host: str = Field(..., min_length=1)
     db_port: int = 5432

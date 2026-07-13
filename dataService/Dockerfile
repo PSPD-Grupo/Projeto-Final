@@ -18,6 +18,6 @@ RUN python -m grpc_tools.protoc \
     --grpc_python_out=src/generated \
     proto/patient_data.proto
 
-EXPOSE 50051 8080
+EXPOSE 50052 8081
 
 CMD ["python", "-m", "app.main"]
