@@ -18,14 +18,8 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: Install and Build 🔧
-        run: |
-          cd frontend
-          npm install
-          npm run build
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: frontend/dist
+          folder: docs
           branch: gh-pages
