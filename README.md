@@ -98,6 +98,16 @@ Para a entrega e apresentação do trabalho, o **Frontend** foi construído como
    ```bash
    npm run dev
    ```
+
+### Credenciais para Teste (Login)
+
+Para acessar o painel e navegar pelos diferentes perfis, utilize os seguintes usuários. A senha padrão para o modo Conectado (Live API) é `PseudoPEP2026!`. Para o modo Simulação (Mock), a senha é `123456`.
+
+| Perfil | Modo Conectado (Usuário) | Modo Simulação (Usuário) |
+| :--- | :--- | :--- |
+| **Médico (FULL)** | `med.cardoso` | `medico_demo` |
+| **Estagiário (PARTIAL)** | `est.ferreira` | `estagiario_demo` |
+| **Pesquisador (AGGREGATED)** | `pes.mendes` | `pesq_demo` |
 4. Abra o navegador no endereço indicado (ex: `http://localhost:5173`).
 
 ---
