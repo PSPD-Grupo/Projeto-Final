@@ -9,7 +9,7 @@ from app.db import Database
 from app.grpc_codegen import ensure_grpc_generated
 from app.http_app import create_http_app
 from app.repositories import PatientRepository
-
+from app.auth.interceptor import JwtAuthInterceptor
 
 async def serve() -> None:
     ensure_grpc_generated()
@@ -22,7 +22,11 @@ async def serve() -> None:
     database = Database(settings)
     await database.connect()
 
-    grpc_server = grpc.aio.server()
+    grpc_server = grpc.aio.server(
+    interceptors=[
+        JwtAuthInterceptor(settings.jwt_secret)
+        ]
+    )
     repository = PatientRepository(database)
     register_patient_data_service(grpc_server, repository, settings)
     grpc_server.add_insecure_port(settings.grpc_bind_address)
