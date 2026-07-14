@@ -12,7 +12,7 @@ import {
 } from '../mockData';
 
 // Configurable API Gateway URL for Live Mode
-let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://:8000';
+let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8000';
 let IS_MOCK_MODE = false; // Default to true for easy demo on GitHub Pages
 
 export const getApiConfig = () => ({

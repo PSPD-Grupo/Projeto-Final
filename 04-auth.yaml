@@ -48,20 +48,30 @@ spec:
               value: "5432"
 
             - name: DB_NAME
-              value: "auth"
+              value: "auth_hospital"
 
             - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: auth-db-credentials
-                  key: POSTGRES_USER
+              value: postgres
 
             - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: auth-db-credentials
-                  key: POSTGRES_PASSWORD
+              value: postgres
 
+            - name: dbHost
+              value: "137.131.132.161" # IP ou domínio do banco
+
+            - name: dbPort
+              value: "5432"
+
+            - name: dbname
+              value: "auth_hospital"
+
+            - name: dbUser
+              value: postgres
+
+            - name: dbPassword
+              value: postgres
+            - name: SECRET
+              value: DT4xMpG3kn44CsQ1ijgTjrWftPTU3AQ9+jmSNT/4vUs=
           ports:
             - containerPort: 50051
 
@@ -73,9 +83,11 @@ metadata:
   namespace: grupo-8
 
 spec:
+  type: NodePort
   selector:
     app: auth-service
 
   ports:
     - port: 50054
       targetPort: 50051
+      nodePort: 30054

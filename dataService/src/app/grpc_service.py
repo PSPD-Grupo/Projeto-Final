@@ -32,11 +32,14 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         return pb2.HealthCheckResponse(status="SERVING")
 
     async def GetPatient(self, request, context):
+        print(f"pedido de paciente, id: {request.patient_id}")
         user_context = user_context_from_metadata(context.invocation_metadata())
         result = await self._repository.get_patient(user_context, request.patient_id)
         if result is None:
+            print("paciente não achado")
             await context.abort(grpc.StatusCode.NOT_FOUND, "Patient not found or access denied")
         patient, access_level = result
+        print(f"ACHOU!")
         return pb2.GetPatientResponse(
             patient=patient_record_message(
                 pb2,

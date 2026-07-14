@@ -16,29 +16,13 @@ services:
       dockerfile: Dockerfile
     container_name: data-service
     ports:
-      - "50052:50051"
+      - "50052:50052"
     environment:
-      DB_HOST: 192.168.122.1
+      DB_HOST: 137.131.132.161
       DB_PORT: 5432
-      DB_NAME: pseudopep_g08
-      DB_USER: grupo08_user
-      DB_PASSWORD: 123@g08
-
-  db:
-    image: postgres:16-alpine
-    container_name: data-db
-    restart: unless-stopped
-    environment:
-      POSTGRES_DB: patient_db
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5432"
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d patient_db"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      DB_NAME: patient_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
 
   auth:
     build:
@@ -52,35 +36,11 @@ services:
     env_file:
       - .env_docker
     environment:
-      DB_HOST: db_auth
+      DB_HOST: 137.131.132.161
       DB_PORT: 5432
-      DB_NAME: ${dbname}
-      DB_USER: ${dbUser}
-      DB_PASSWORD: ${dbPassword}
-    depends_on:
-      db_auth:
-        condition: service_healthy
-
-  db_auth:
-    image: postgres:16-alpine
-    container_name: auth-db
-    restart: unless-stopped
-    env_file:
-      - ./auth/.env_docker
-    environment:
-      POSTGRES_DB: ${dbname}
-      POSTGRES_USER: ${dbUser}
-      POSTGRES_PASSWORD: ${dbPassword}
-    ports:
-      - "5434:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./auth/db/createdb.sql:/docker-entrypoint-initdb.d/01_createdb.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d auth_hospital"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
+      DB_NAME: auth_hospital
+      DB_USER: postgres
+      DB_PASSWORD: postgres
 
   data-transform:
     build: 
