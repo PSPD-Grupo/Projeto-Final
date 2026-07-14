@@ -1,0 +1,58 @@
+services:
+
+  service:
+    build: 
+      context: ./stub
+      dockerfile: dockerfile
+    container_name: stub-api-final
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+
+  data-service:
+    build:
+      context: ./dataService
+      dockerfile: Dockerfile
+    container_name: data-service
+    ports:
+      - "50052:50052"
+    environment:
+      DB_HOST: 137.131.132.161
+      DB_PORT: 5432
+      DB_NAME: patient_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+  auth:
+    build:
+      context: ./auth
+      dockerfile: Dockerfile
+    container_name: auth-service
+    ports:
+      - "50054:50051"
+    working_dir: /app
+    command: python -m app
+    env_file:
+      - .env_docker
+    environment:
+      DB_HOST: 137.131.132.161
+      DB_PORT: 5432
+      DB_NAME: auth_hospital
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+
+  data-transform:
+    build: 
+      context: ./datatransform
+    ports:
+      - "50053:50053"
+      - "9103:9103"
+    environment:
+      GRPC_PORT: "50053"
+      METRICS_PORT: "9103"
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
+
+volumes:
+  pgdata:

@@ -42,7 +42,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
         if not isOk:
             context.abort(grpc.StatusCode.UNAUTHENTICATED, "usuário ou senha errado")
             return auth_pb2.LoginResponse()
-        access_token, access_expires_at = self._generateAccessToken(self._repo.getPermissions(request.username))
+        access_token, access_expires_at = self._generateAccessToken(self._repo.getPermissions(request.username), request.username)
         if access_token == "" or access_expires_at == 0:
             context.abort(grpc.StatusCode.INTERNAL, "usuário sem permissão")
             return auth_pb2.LoginResponse()
@@ -78,7 +78,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             context.abort(grpc.StatusCode.UNAUTHENTICATED, "refresh token inválido")
             return auth_pb2.RefresResponse()
 
-        access_token, expires_at = self._generateAccessToken(self._repo.getPermissions(username))
+        access_token, expires_at = self._generateAccessToken(self._repo.getPermissions(username), username)
         return auth_pb2.RefresResponse(access_token=access_token, expires_at=expires_at)
     
     def Logout(self, request, context):
@@ -95,7 +95,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
             self._revoked_refresh_tokens.add(request.refresh_token)
         return auth_pb2.LogoutResponse()
     
-    def _generateAccessToken(self, permission) -> tuple[str, int]:
+    def _generateAccessToken(self, permission, username) -> tuple[str, int]:
         if not (type(permission) == tuple) and not (type(permission) == list):
             raise TypeError
 
@@ -105,8 +105,17 @@ class AuthService(auth_pb2_grpc.AuthServicer):
         permisao = self._template_permission.copy()
         for p in permission:
             permisao[p] = True
+            
+        role = ""
+        if "FULL" in permission: role = "MEDICO"
+        elif "PARTIAL" in permission: role = "ESTAGIARIO"
+        elif "AGREGATED" in permission: role = "PESQUISADOR"
+
         expires_at = int(time.time())+ACCESS_TOKEN_TLL_SECCOND
         permisao["exp"] = expires_at
+        permisao["sub"] = username
+        permisao["role"] = role
+        permisao["username"] = username
         encoded = jwt.encode(permisao, SECRET, algorithm="HS256")
 
         return encoded, expires_at

@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: auth-service
     ports:
-      - "50051:50051"
+      - "50054:50051"
     working_dir: /app
     command: python -m app
     env_file:
@@ -16,30 +16,6 @@ services:
       DB_NAME: ${dbname}
       DB_USER: ${dbUser}
       DB_PASSWORD: ${dbPassword}
-    depends_on:
-      db:
-        condition: service_healthy
-
-  db:
-    image: postgres:16-alpine
-    container_name: auth-db
-    restart: unless-stopped
-    env_file:
-      - .env_docker
-    environment:
-      POSTGRES_DB: ${dbname}
-      POSTGRES_USER: ${dbUser}
-      POSTGRES_PASSWORD: ${dbPassword}
-    ports:
-      - "5432:5432"
-    volumes:
-      - pgdata:/var/lib/postgresql/data
-      - ./db/createdb.sql:/docker-entrypoint-initdb.d/01_createdb.sql:ro
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d auth_hospital"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
 
 volumes:
   pgdata:

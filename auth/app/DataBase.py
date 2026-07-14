@@ -12,7 +12,7 @@ load_dotenv()
 
 TEMPLATE_FUNCAO = {
     "MEDICO": ["FULL"],
-    "PESQUIASDOR": ["AGREGATED"],
+    "PESQUISADOR": ["AGREGATED"],
     "ESTAGIARIO": ["PARTIAL"]
 }
 

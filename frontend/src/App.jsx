@@ -4,7 +4,7 @@ import MedicoView from './components/MedicoView';
 import StagiarioView from './components/EstagiarioView';
 import PesquisadorView from './components/PesquisadorView';
 import ObservabilityView from './components/ObservabilityView';
-import PresentationView from './components/PresentationView';
+
 import { 
   LogOut, 
   Settings, 
@@ -14,8 +14,8 @@ import {
   Moon, 
   Lock, 
   Stethoscope, 
-  Presentation,
-  KeyRound
+  KeyRound,
+  Database
 } from 'lucide-react';
 
 const App = () => {
@@ -26,7 +26,7 @@ const App = () => {
   const [apiConfig, setApiConfigState] = useState(getApiConfig());
   
   // Public Landing vs Login toggle
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
 
   // Login inputs
   const [loginUsername, setLoginUsername] = useState('');
@@ -79,7 +79,7 @@ const App = () => {
     setLoginError('');
     setLoginLoading(true);
     try {
-      const res = await api.login(username, '123456');
+      const res = await api.login(username, apiConfig.isMock ? '123456' : 'PseudoPEP2026!');
       setUser(res.user);
       setToken(res.token);
     } catch (err) {
@@ -136,18 +136,7 @@ const App = () => {
                 {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
               </button>
 
-              {/* Login / Presentation Mode Toggle */}
-              {showLogin ? (
-                <button onClick={() => setShowLogin(false)} className="btn btn-outline" style={{ fontSize: '0.85rem' }}>
-                  <Presentation size={15} />
-                  Ver Apresentação
-                </button>
-              ) : (
-                <button onClick={() => setShowLogin(true)} className="btn btn-primary" style={{ fontSize: '0.85rem' }}>
-                  <KeyRound size={15} />
-                  Acessar Portal Clínico
-                </button>
-              )}
+              {/* Removed Presentation Toggle */}
             </div>
           </div>
 
@@ -163,13 +152,7 @@ const App = () => {
             width: '100%',
             margin: '0 auto'
           }}>
-            {!showLogin ? (
-              /* Public Slideshow */
-              <div style={{ width: '100%', maxWidth: '850px' }}>
-                <PresentationView />
-              </div>
-            ) : (
-              /* Login Form Panel */
+            {/* Removed Presentation View */}
               <div style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
@@ -261,37 +244,36 @@ const App = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     {/* Doctor */}
                     <button 
-                      onClick={() => handleQuickLogin('dr.cardoso')}
+                      onClick={() => handleQuickLogin('med.cardoso')}
                       className="btn btn-role-medico"
                       style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0.8rem', fontSize: '0.85rem' }}
                     >
                       <span>Entrar como Médico (FULL)</span>
-                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>dr.cardoso</span>
+                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>med.cardoso</span>
                     </button>
 
                     {/* Intern */}
                     <button 
-                      onClick={() => handleQuickLogin('est.barros')}
+                      onClick={() => handleQuickLogin('est.ferreira')}
                       className="btn btn-role-estagiario"
                       style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0.8rem', fontSize: '0.85rem' }}
                     >
                       <span>Entrar como Estagiário (PARTIAL)</span>
-                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>est.barros</span>
+                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>est.ferreira</span>
                     </button>
 
                     {/* Researcher */}
                     <button 
-                      onClick={() => handleQuickLogin('pesq.fonseca')}
+                      onClick={() => handleQuickLogin('pes.mendes')}
                       className="btn btn-role-pesquisador"
                       style={{ display: 'flex', justifyContent: 'space-between', padding: '0.5rem 0.8rem', fontSize: '0.85rem' }}
                     >
                       <span>Entrar como Pesquisador (ANONYMIZED)</span>
-                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>pesq.fonseca</span>
+                      <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>pes.mendes</span>
                     </button>
                   </div>
                 </div>
               </div>
-            )}
           </div>
         </div>
       ) : (
