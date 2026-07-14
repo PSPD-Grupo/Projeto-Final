@@ -13,7 +13,7 @@ from app.mappers import (
     research_project_message,
 )
 from app.repositories import PatientRepository
-from app.user_context import user_context_from_metadata
+
 
 generated_dir = Path(__file__).resolve().parents[1] / "generated"
 if str(generated_dir) not in sys.path:
@@ -32,8 +32,10 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         return pb2.HealthCheckResponse(status="SERVING")
 
     async def GetPatient(self, request, context):
-        print(f"pedido de paciente, id: {request.patient_id}")
-        user_context = user_context_from_metadata(context.invocation_metadata())
+
+        user_context = context.user_context
+        print(f"pedido de paciente, id: {request.patient_id}")       
+
         result = await self._repository.get_patient(user_context, request.patient_id)
         if result is None:
             print("paciente não achado")
@@ -50,7 +52,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def SearchPatients(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         patients = await self._repository.search_patients(
             user_context,
             request.query,
@@ -65,7 +67,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def ListEncounters(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         result = await self._repository.list_encounters(
             user_context,
             request.patient_id,
@@ -83,7 +85,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def ListClinicalEvents(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         result = await self._repository.list_clinical_events(
             user_context,
             request.patient_id,
@@ -103,7 +105,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def ListResearchProjects(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         projects = await self._repository.list_research_projects(user_context, request.status)
         if not user_context.can_read_research_data:
             await context.abort(grpc.StatusCode.PERMISSION_DENIED, "Research role required")
@@ -112,7 +114,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def GetCohortStats(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         result = await self._repository.get_cohort_stats(user_context, request.project_id)
         if result is None:
             await context.abort(grpc.StatusCode.NOT_FOUND, "Project not found or access denied")
@@ -139,7 +141,7 @@ class PatientDataGrpcService(pb2_grpc.PatientDataServiceServicer):
         )
 
     async def ListAnonymizedLabResults(self, request, context):
-        user_context = user_context_from_metadata(context.invocation_metadata())
+        user_context = context.user_context
         results = await self._repository.list_anonymized_lab_results(
             user_context,
             request.project_id,

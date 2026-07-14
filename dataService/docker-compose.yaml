@@ -1,0 +1,51 @@
+services:
+  data-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: patient-data-service
+    env_file:
+      - .env
+    environment:
+      APP_ENV: development
+      GRPC_HOST: 0.0.0.0
+      GRPC_PORT: 50052
+      HTTP_HOST: 0.0.0.0
+      HTTP_PORT: 8081
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-pseudopep_g08}
+      DB_USER: ${DB_USER:-grupo08_user}
+      DB_PASSWORD: ${DB_PASSWORD:-123@g08}
+      PSEUDONYM_SALT: ${PSEUDONYM_SALT:-change-me-in-production}
+      LOG_LEVEL: ${LOG_LEVEL:-INFO}
+    ports:
+      - "50052:50052"
+      - "8081:8081"
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  db:
+    image: postgres:16-alpine
+    container_name: patient-data-db
+    environment:
+      POSTGRES_DB: ${DB_NAME:-pseudopep_g08}
+      POSTGRES_USER: ${DB_USER:-grupo08_user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-123@g08}
+    ports:
+      - "5433:5432"
+    volumes:
+      - patient_data_pgdata:/var/lib/postgresql/data
+      # Add SQL files under ./db/init if you want PostgreSQL to load schema/seed data on first start.
+      # - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  patient_data_pgdata:
