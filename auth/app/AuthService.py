@@ -115,6 +115,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
         permisao["exp"] = expires_at
         permisao["sub"] = username
         permisao["role"] = role
+        permisao["username"] = username
         encoded = jwt.encode(permisao, SECRET, algorithm="HS256")
 
         return encoded, expires_at
