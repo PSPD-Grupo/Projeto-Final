@@ -18,14 +18,11 @@ services:
     ports:
       - "50052:50051"
     environment:
-      DB_HOST: db
+      DB_HOST: 192.168.122.1
       DB_PORT: 5432
-      DB_NAME: patient_db
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-    depends_on:
-      db:
-        condition: service_healthy
+      DB_NAME: pseudopep_g08
+      DB_USER: grupo08_user
+      DB_PASSWORD: 123@g08
 
   db:
     image: postgres:16-alpine

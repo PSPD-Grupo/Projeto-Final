@@ -3,34 +3,40 @@ kind: Deployment
 metadata:
   name: data-service
   namespace: grupo-8
+
 spec:
   replicas: 1
+
   selector:
     matchLabels:
       app: data-service
+
   template:
     metadata:
       labels:
         app: data-service
+
     spec:
-      initContainers:
-        - name: wait-for-db
-          image: postgres:16-alpine
-          command:
-            - sh
-            - -c
-            - until pg_isready -h db -p 5432 -U postgres; do echo "aguardando db..."; sleep 2; done
-          resources:
-            requests:
-              cpu: "50m"
-              memory: "64Mi"
-            limits:
-              cpu: "100m"
-              memory: "128Mi"
       containers:
         - name: data-service
-          # Build a partir de ./dataService/Dockerfile e envie para seu registry
-          image: your-registry/data-service:latest
+          image: pedrofcruz/projeto-final-data-service:latest
+
+          env:
+            - name: DB_HOST
+              value: "192.168.122.1"
+
+            - name: DB_PORT
+              value: "5432"
+
+            - name: DB_NAME
+              value: "pseudopep_g08"
+
+            - name: DB_USER
+              value: "grupo08_user"
+
+            - name: DB_PASSWORD
+              value: "123@g08"
+
           resources:
             requests:
               cpu: "100m"
@@ -38,37 +44,21 @@ spec:
             limits:
               cpu: "500m"
               memory: "256Mi"
+
           ports:
             - containerPort: 50051
-          env:
-            - name: DB_HOST
-              value: "db"
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_NAME
-              valueFrom:
-                secretKeyRef:
-                  name: data-db-credentials
-                  key: POSTGRES_DB
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: data-db-credentials
-                  key: POSTGRES_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: data-db-credentials
-                  key: POSTGRES_PASSWORD
+
 ---
 apiVersion: v1
 kind: Service
 metadata:
   name: data-service
   namespace: grupo-8
+
 spec:
   selector:
     app: data-service
+
   ports:
     - port: 50052
       targetPort: 50051

@@ -19,8 +19,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: auth-auth:latest
-          imagePullPolicy: IfNotPresent
+          image: pedrofcruz/projeto-final-auth:latest
 
           workingDir: /app
 

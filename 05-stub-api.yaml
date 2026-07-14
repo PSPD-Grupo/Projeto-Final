@@ -16,7 +16,7 @@ spec:
       containers:
         - name: stub-api
           # Build a partir de ./stub/dockerfile e envie para seu registry
-          image: your-registry/stub-api:latest
+          image: pedrofcruz/projeto-final-stub-service:latest
           resources:
             requests:
               cpu: "100m"
