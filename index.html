@@ -93,6 +93,10 @@
             <div class="phase-card">
                 <h3>O que fizemos</h3>
                 <p>Desenvolvemos uma aplicação completa simulando um Prontuário Eletrônico do Paciente (PEP), dividida em microsserviços. O sistema inclui um serviço de Autenticação baseado em JWT com controle de papéis (RBAC), um serviço de Dados Clínicos focado no padrão HL7 FHIR usando PostgreSQL, e um serviço de Transformação de Dados via gRPC para pseudo-anonimização e controle de acesso a níveis granulares (FULL, PARTIAL, ANONYMIZED e AGGREGATED). Além disso, construímos um Frontend moderno em React com Vite para demonstrar o consumo prático das APIs integradas via o Gateway (Stub).</p>
+                <p>
+                    Implementação do Data Transform:
+                    <a href="https://www.youtube.com/watch?v=xwSog-jGHq0">Microsserviço Data Transform</a>
+                </p>
             </div>
 
             <div class="phase-card">
@@ -131,8 +135,8 @@
 
                 <div class="aluno-card glass-panel-inner">
                     <h4>Daniel dos Santos Barros de Sousa</h4>
-                    <p><strong>Foco do trabalho:</strong> Microsserviço de DataTransform e manipulação de dados sensíveis.</p>
-                    <p><strong>Aprendizados:</strong> Compreensão profunda do padrão HL7 FHIR, baseada em papéis, como também a implementação de interceptores gRPC com foco em usar token jwt para o controle de acesso granular.</p>
+                    <p><strong>Foco do trabalho:</strong> Microsserviço de Data Transform e manipulação de dados sensíveis — projeto do contrato gRPC (.proto), implementação da conversão de dados clínicos brutos para o padrão HL7/FHIR, definição e implementação da política de redação/anonimização por nível de acesso (FULL, PARTIAL, ANONYMIZED, AGGREGATED), autenticação via interceptor gRPC com validação de JWT, instrumentação de métricas Prometheus, testes unitários e de integração, e validação da integração com o client consumidor (API Gateway).</p>
+                    <p><strong>Aprendizados:</strong> Compreensão profunda do padrão HL7 FHIR baseado em papéis, bem como a implementação de interceptors gRPC com foco em usar token JWT para o controle de acesso granular. Também aprofundei conhecimento em Protobuf/gRPC (definição de contrato, geração de stubs, tratamento de erros via status codes e trailing metadata), em técnicas de anonimização e pseudonimização de dados sensíveis (hashing determinístico com salt), e em observabilidade de aplicações via Prometheus (métricas de contagem, latência e taxa de erro).</p>
                     <div class="nota-badge">Autoavaliação: 10</div>
                 </div>
 
