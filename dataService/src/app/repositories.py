@@ -77,7 +77,7 @@ class PatientRepository:
         query = """
             SELECT patient_id, full_name, birth_date, gender, city, state, cpf, cns
             FROM patients
-            WHERE patient_id = $1
+            WHERE patient_id = $1;
         """
         async with self._database.pool.acquire() as connection:
             row = await connection.fetchrow(query, patient_id)
