@@ -8,6 +8,10 @@ services:
     restart: unless-stopped
     env_file:
       - .env
+    environment:
+      SERVIDOR_AUTH_HOST: auth:50051
+      SERVIDOR_B_HOST: data-service:50052
+      SERVIDOR_DATATRANSFORM_HOST: data-transform:50053
     ports:
       - "8000:8000"
     networks:
@@ -21,12 +25,15 @@ services:
     restart: unless-stopped
     ports:
       - "50052:50052"
+      - "8081:8081"
     environment:
       DB_HOST: postgres_db
       DB_PORT: 5432
-      DB_NAME: patient_db
+      DB_NAME: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
     depends_on:
       postgres_db:
         condition: service_healthy
@@ -49,6 +56,8 @@ services:
       DB_NAME: auth_hospital
       DB_USER: postgres
       DB_PASSWORD: postgres
+      JWT_SECRET: ${JWT_SECRET:-dev-secret}
+      PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
     ports:
       - "50054:50051"
     depends_on:

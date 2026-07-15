@@ -24,7 +24,7 @@ class Settings(BaseSettings):
     pseudonym_salt: str = "change-me-in-production"
     log_level: str = "INFO"
 
-    jwt_secret: str = os.getenv("JWT_SECRET", "")
+    jwt_secret: str = Field(..., min_length=1)
 
     model_config = SettingsConfigDict(env_file_encoding="utf-8")
 

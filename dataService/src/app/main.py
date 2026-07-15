@@ -17,6 +17,7 @@ async def serve() -> None:
     from app.grpc_service import register_patient_data_service
 
     settings = get_settings()
+    print("JWT_SECRET =", repr(settings.jwt_secret))
     logging.basicConfig(level=settings.log_level)
 
     database = Database(settings)

@@ -1,3 +1,6 @@
+from urllib import request
+from xml.sax import handler
+
 import grpc
 
 from app.auth.jwt_decoder import decode_token, TokenExpiredError, TokenMalformedError
@@ -24,7 +27,7 @@ class JwtAuthInterceptor(grpc.aio.ServerInterceptor):
     def __init__(self, jwt_secret: str):
         self._secret = jwt_secret
 
-    def intercept_service(self, continuation, handler_call_details):
+    async def intercept_service(self, continuation, handler_call_details):
         token = self._extract_token(handler_call_details.invocation_metadata)
 
         if token is None:
@@ -48,7 +51,7 @@ class JwtAuthInterceptor(grpc.aio.ServerInterceptor):
         except NoAccessLevelError as e:
             return _abort_handler(grpc.StatusCode.PERMISSION_DENIED, str(e), "NO_ACCESS_LEVEL")
 
-        handler = continuation(handler_call_details)
+        handler = await continuation(handler_call_details)
         return self._wrap_handler(handler, user_context)
 
     @staticmethod
@@ -65,11 +68,13 @@ class JwtAuthInterceptor(grpc.aio.ServerInterceptor):
 
         original = handler.unary_unary
 
-        def wrapped(request, context):
-            return original(request, _ContextWrapper(context, user_context))
-
-        return grpc.unary_unary_rpc_method_handler(
-            wrapped,
-            request_deserializer=handler.request_deserializer,
-            response_serializer=handler.response_serializer,
+        async def wrapped(request, context):
+            return await original(
+            request,
+            _ContextWrapper(context, user_context)
         )
+
+        return grpc.unary_unary_rpc_method_handler(wrapped,
+        request_deserializer=handler.request_deserializer,
+        response_serializer=handler.response_serializer,
+    )
