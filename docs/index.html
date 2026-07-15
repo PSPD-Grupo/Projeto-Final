@@ -25,7 +25,7 @@
             <li><a href="#desenvolvimento"><i class="fa-solid fa-list-check"></i> Desenvolvimento e Desafios</a></li>
             <li><a href="#conclusao"><i class="fa-solid fa-flag-checkered"></i> Conclusão</a></li>
             <li><a href="#referencias"><i class="fa-solid fa-quote-right"></i> Referências</a></li>
-            <li><a href="#anexos"><i class="fa-solid fa-paperclip"></i> Anexos</a></li>
+
         </ul>
     </nav>
 
@@ -155,33 +155,6 @@
             </ul>
         </section>
 
-        <section id="anexos" class="section-container glass-panel animate-slide-up">
-            <h2><i class="fa-solid fa-paperclip text-accent"></i> Anexos</h2>
-            <p>
-                O código fonte completo deste projeto está versionado em nosso repositório no GitHub. Abaixo, destacamos a configuração central utilizada para o escalonamento horizontal autônomo do Gateway:
-            </p>
-            <!-- Exemplo de código -->
-            <pre><code># Exemplo de YAML HPA (Horizontal Pod Autoscaler)
-apiVersion: autoscaling/v2
-kind: HorizontalPodAutoscaler
-metadata:
-  name: api-gateway-hpa
-spec:
-  scaleTargetRef:
-    apiVersion: apps/v1
-    kind: Deployment
-    name: api-gateway
-  minReplicas: 1
-  maxReplicas: 10
-  metrics:
-  - type: Resource
-    resource:
-      name: cpu
-      target:
-        type: Utilization
-        averageUtilization: 70</code></pre>
-        </section>
-        
         <footer>
             <p>&copy; 2026 - Projeto Final PSPD. Feito com <i class="fa-solid fa-heart text-accent"></i> para a aprovação!</p>
         </footer>
