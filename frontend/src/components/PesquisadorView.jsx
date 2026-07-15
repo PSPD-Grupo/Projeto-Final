@@ -10,7 +10,7 @@ const PesquisadorView = ({ token }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Fetch researcher projects
+  
   useEffect(() => {
     const fetchProjects = async () => {
       setLoading(true);
@@ -36,11 +36,11 @@ const PesquisadorView = ({ token }) => {
     setSelectedProject(project);
     setCohortData(null);
     try {
-      // Fetch cohort data for the project's condition
+      
       const data = await api.getCohortData(project.codigo_condicao, project.id_projeto, token);
       setCohortData(data);
     } catch (err) {
-      // In case of DENY (e.g., project is Suspended)
+      
       setCohortData(null);
       setError(err.message);
     } finally {
@@ -59,7 +59,7 @@ const PesquisadorView = ({ token }) => {
       </div>
 
       <div className="grid-main">
-        {/* Left Side: Projects List */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div className="glass-panel" style={{ padding: '1.25rem' }}>
             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -107,7 +107,7 @@ const PesquisadorView = ({ token }) => {
           </div>
         </div>
 
-        {/* Right Side: Cohort & Aggregated Stats or DENY */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {loading ? (
             <div className="glass-panel" style={{ padding: '4rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -117,8 +117,7 @@ const PesquisadorView = ({ token }) => {
               </div>
             </div>
           ) : error ? (
-            /* DENY Layout (e.g. Suspended Project) */
-            <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
+                        <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
               <div style={{ textAlign: 'center' }}>
                 <ShieldAlert size={48} style={{ color: 'var(--color-danger)', marginBottom: '1rem' }} />
                 <h3 style={{ fontSize: '1.4rem', color: 'var(--color-danger)', marginBottom: '0.5rem' }}>Acesso Negado (DENY)</h3>
@@ -135,9 +134,8 @@ const PesquisadorView = ({ token }) => {
               </div>
             </div>
           ) : cohortData ? (
-            /* AGGREGATED & ANONYMIZED View */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Aggregation Panel Header */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.5rem' }}>
                   <h3 style={{ fontSize: '1.4rem', color: 'var(--color-pesquisador)' }}>
@@ -157,9 +155,9 @@ const PesquisadorView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Statistics Grid */}
+              {}
               <div className="grid-stats">
-                {/* Total Cases */}
+                {}
                 <div className="glass-panel" style={{ padding: '1.25rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
                   <div style={{ background: 'var(--color-pesquisador-glow)', color: 'var(--color-pesquisador)', padding: '0.75rem', borderRadius: 'var(--radius-sm)' }}>
                     <Users size={24} />
@@ -170,7 +168,7 @@ const PesquisadorView = ({ token }) => {
                   </div>
                 </div>
 
-                {/* Gender Ratio */}
+                {}
                 <div className="glass-panel" style={{ padding: '1.25rem' }}>
                   <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Distribuição de Gênero</div>
                   <div style={{ display: 'flex', height: '18px', borderRadius: '9px', overflow: 'hidden', background: '#3b82f6', position: 'relative' }}>
@@ -183,9 +181,9 @@ const PesquisadorView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Graphical Distribution */}
+              {}
               <div className="grid-stats" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))' }}>
-                {/* Age Bands */}
+                {}
                 <div className="glass-panel" style={{ padding: '1.25rem' }}>
                   <h4 style={{ fontSize: '0.9rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <BarChart2 size={16} /> Faixa Etária (%)
@@ -205,12 +203,12 @@ const PesquisadorView = ({ token }) => {
                   </div>
                 </div>
 
-                {/* Top Departments */}
+                {}
                 <div className="glass-panel" style={{ padding: '1.25rem' }}>
                   <h4 style={{ fontSize: '0.9rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     <BarChart2 size={16} /> Setores Mais Acessados
                   </h4>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', height: '250px', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', maxHeight: '250px', overflowY: 'auto', paddingRight: '0.5rem' }}>
                     {cohortData.departments.map(dept => (
                       <div key={dept.name}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.8rem', marginBottom: '0.25rem' }}>
@@ -226,7 +224,7 @@ const PesquisadorView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Anonymized Patients Lab Data */}
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                   <FileSpreadsheet size={18} />

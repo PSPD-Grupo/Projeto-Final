@@ -21,14 +21,14 @@ import {
 const App = () => {
   const [user, setUser] = useState(null);
   const [token, setToken] = useState(null);
-  const [activeTab, setActiveTab] = useState('pacientes'); // Default inner tab
+  const [activeTab, setActiveTab] = useState('pacientes'); 
   const [theme, setTheme] = useState('dark');
   const [apiConfig, setApiConfigState] = useState(getApiConfig());
   
-  // Public Landing vs Login toggle
+  
   const [showLogin, setShowLogin] = useState(true);
 
-  // Login inputs
+  
   const [loginUsername, setLoginUsername] = useState('');
   const [loginPassword, setLoginPassword] = useState('');
   const [loginError, setLoginError] = useState('');
@@ -49,7 +49,7 @@ const App = () => {
     }
   }, [theme]);
 
-  // Adjust default tab when user logs in based on role
+  
   useEffect(() => {
     if (user) {
       if (user.role === 'PESQUISADOR') {
@@ -109,10 +109,10 @@ const App = () => {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--bg-primary)' }}>
-      {/* 1. Public Landing page when user is NOT logged in */}
+      {}
       {!user ? (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          {/* Landing Header */}
+          {}
           <div className="header glass-panel" style={{ 
             borderRadius: 0, 
             borderTop: 'none', 
@@ -131,16 +131,16 @@ const App = () => {
             </div>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              {/* Theme Toggle */}
+              {}
               <button onClick={toggleTheme} className="btn btn-outline" style={{ borderRadius: '50%', padding: '0.5rem' }}>
                 {theme === 'dark' ? <Sun size={15} /> : <Moon size={15} />}
               </button>
 
-              {/* Removed Presentation Toggle */}
+              {}
             </div>
           </div>
 
-          {/* Landing Body */}
+          {}
           <div style={{ 
             flexGrow: 1, 
             display: 'flex', 
@@ -152,7 +152,7 @@ const App = () => {
             width: '100%',
             margin: '0 auto'
           }}>
-            {/* Removed Presentation View */}
+            {}
               <div style={{ 
                 display: 'flex', 
                 flexDirection: 'column', 
@@ -170,7 +170,7 @@ const App = () => {
                   </p>
                 </div>
 
-                {/* Login Form */}
+                {}
                 <div className="glass-panel" style={{ width: '100%', padding: '2rem', marginBottom: '1.5rem' }}>
                   <h2 style={{ fontSize: '1.2rem', marginBottom: '1.25rem', textAlign: 'center' }}>Login do Usuário</h2>
                   
@@ -236,13 +236,13 @@ const App = () => {
                   </form>
                 </div>
 
-                {/* Quick Access Shortcuts */}
+                {}
                 <div className="glass-panel" style={{ width: '100%', padding: '1.25rem' }}>
                   <h4 style={{ fontSize: '0.8rem', color: 'var(--text-muted)', textTransform: 'uppercase', textAlign: 'center', marginBottom: '0.8rem' }}>
                     Perfis de Atalho (Simular Keycloak)
                   </h4>
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                    {/* Doctor */}
+                    {}
                     <button 
                       onClick={() => handleQuickLogin('med.cardoso')}
                       className="btn btn-role-medico"
@@ -252,7 +252,7 @@ const App = () => {
                       <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>med.cardoso</span>
                     </button>
 
-                    {/* Intern */}
+                    {}
                     <button 
                       onClick={() => handleQuickLogin('est.ferreira')}
                       className="btn btn-role-estagiario"
@@ -262,7 +262,7 @@ const App = () => {
                       <span style={{ fontSize: '0.75rem', opacity: 0.8 }}>est.ferreira</span>
                     </button>
 
-                    {/* Researcher */}
+                    {}
                     <button 
                       onClick={() => handleQuickLogin('pes.mendes')}
                       className="btn btn-role-pesquisador"
@@ -277,16 +277,15 @@ const App = () => {
           </div>
         </div>
       ) : (
-        /* 2. Main Dashboard Layout when user is logged in */
-        <div className="dashboard-layout">
-          {/* Sidebar (Presentation Tab is removed as requested) */}
+                <div className="dashboard-layout">
+          {}
           <div className="sidebar glass-panel" style={{ borderLeft: 'none', borderTop: 'none', borderBottom: 'none' }}>
             <div style={{ padding: '1.5rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Stethoscope size={20} className="text-primary" />
               <span style={{ fontWeight: 'bold', fontFamily: 'var(--font-title)', fontSize: '1.1rem' }}>Portal Clínico</span>
             </div>
 
-            {/* Profile Info Summary */}
+            {}
             <div style={{ padding: '1.25rem', borderBottom: '1px solid var(--border-color)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
               <img 
                 src={user.avatar} 
@@ -301,9 +300,9 @@ const App = () => {
               </div>
             </div>
 
-            {/* Menu Items (Presentation is removed) */}
+            {}
             <div style={{ padding: '1rem', display: 'flex', flexDirection: 'column', gap: '0.25rem', flexGrow: 1 }}>
-              {/* Patient View for Doctors/Interns */}
+              {}
               {user.role !== 'PESQUISADOR' && (
                 <button 
                   onClick={() => setActiveTab('pacientes')}
@@ -315,7 +314,7 @@ const App = () => {
                 </button>
               )}
 
-              {/* Research View for Researchers */}
+              {}
               {user.role === 'PESQUISADOR' && (
                 <button 
                   onClick={() => setActiveTab('pesquisa')}
@@ -327,17 +326,8 @@ const App = () => {
                 </button>
               )}
 
-              {/* Observability Panel */}
-              <button 
-                onClick={() => setActiveTab('observabilidade')}
-                className={`btn ${activeTab === 'observabilidade' ? 'btn-primary' : 'btn-outline'}`}
-                style={{ justifyContent: 'flex-start', width: '100%', fontSize: '0.85rem' }}
-              >
-                <Activity size={15} />
-                Observabilidade K8S
-              </button>
 
-              {/* API Configuration */}
+              {}
               <button 
                 onClick={() => setActiveTab('configuracoes')}
                 className={`btn ${activeTab === 'configuracoes' ? 'btn-primary' : 'btn-outline'}`}
@@ -348,7 +338,7 @@ const App = () => {
               </button>
             </div>
 
-            {/* Logout Footer */}
+            {}
             <div style={{ padding: '1rem', borderTop: '1px solid var(--border-color)' }}>
               <button 
                 onClick={handleLogout}
@@ -361,9 +351,9 @@ const App = () => {
             </div>
           </div>
 
-          {/* Main Content */}
+          {}
           <div className="main-content">
-            {/* Header */}
+            {}
             <div className="header glass-panel" style={{ borderTop: 'none', borderLeft: 'none', borderRight: 'none', padding: '0 2rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                 <span className={`badge ${apiConfig.isMock ? 'badge-medico' : 'badge-estagiario'}`} style={{ fontSize: '0.7rem' }}>
@@ -381,7 +371,7 @@ const App = () => {
               </div>
             </div>
 
-            {/* Dashboard Content Body */}
+            {}
             <div className="content-body">
               {activeTab === 'pacientes' && user.role === 'MEDICO' && (
                 <MedicoView token={token} />
@@ -395,9 +385,6 @@ const App = () => {
                 <PesquisadorView token={token} />
               )}
 
-              {activeTab === 'observabilidade' && (
-                <ObservabilityView />
-              )}
 
               {activeTab === 'configuracoes' && (
                 <div className="glass-panel animate-fade-in" style={{ padding: '2rem', maxWidth: '600px', margin: '0 auto' }}>

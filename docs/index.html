@@ -22,8 +22,7 @@
             <li><a href="#dados" class="active"><i class="fa-solid fa-users"></i> Identificação</a></li>
             <li><a href="#introducao"><i class="fa-solid fa-book-open"></i> Introdução</a></li>
             <li><a href="#metodologia"><i class="fa-solid fa-sitemap"></i> Metodologia</a></li>
-            <li><a href="#kubernetes"><i class="fa-solid fa-server"></i> Kubernetes</a></li>
-            <li><a href="#fases"><i class="fa-solid fa-list-check"></i> 5 Fases</a></li>
+            <li><a href="#desenvolvimento"><i class="fa-solid fa-list-check"></i> Desenvolvimento e Desafios</a></li>
             <li><a href="#conclusao"><i class="fa-solid fa-flag-checkered"></i> Conclusão</a></li>
             <li><a href="#referencias"><i class="fa-solid fa-quote-right"></i> Referências</a></li>
             <li><a href="#anexos"><i class="fa-solid fa-paperclip"></i> Anexos</a></li>
@@ -85,61 +84,25 @@
             <p>
                 Para a execução das tarefas, a equipe adotou uma abordagem ágil adaptada, com divisões de responsabilidades claras e sprints curtas. Toda a comunicação inicial e as definições sobre o que cada membro deveria fazer ocorreram de forma rápida e dinâmica pelo WhatsApp. Para discussões mais técnicas, pareamentos (pair programming) e dúvidas mais complexas durante o desenvolvimento, utilizávamos o Discord. O controle de versão foi feito no GitHub, onde revisávamos o código de cada um.
             </p>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <h4>Encontro 1: Planejamento e Arquitetura</h4>
-                    <p>Definição das tecnologias (FastAPI, gRPC, PostgreSQL) e divisão dos microsserviços (Gateway, Auth, Patient Data, Data Transform).</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <h4>Encontro 2: Configuração do Kubernetes</h4>
-                    <p>Desenvolvimento dos manifestos YAML (Deployments e Services) e configuração inicial do cluster local utilizando Minikube.</p>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-dot"></div>
-                    <h4>Encontro 3: Testes e Observabilidade</h4>
-                    <p>Integração com Prometheus, configuração do HPA e execução dos scripts de testes de carga para capturar os resultados analisados neste relatório.</p>
-                </div>
-            </div>
+
         </section>
 
-        <section id="kubernetes" class="section-container glass-panel animate-slide-up">
-            <h2><i class="fa-solid fa-server text-accent"></i> Montagem do Kubernetes (Modo Cluster)</h2>
-            <p>
-                A montagem do cluster foi realizada em ambiente local utilizando o Minikube para emular um cluster completo. A infraestrutura foi definida de forma declarativa através de manifestos YAML. Os principais desafios enfrentados incluíram a correta orquestração de dependências (garantir que os bancos de dados subissem e ficassem saudáveis antes dos microsserviços) e a configuração das variáveis de ambiente via ConfigMaps e Secrets.
-            </p>
-            <p>
-                A comunicação interna foi resolvida através do DNS interno do Kubernetes (Services do tipo ClusterIP), enquanto o API Gateway foi exposto externamente via NodePort/LoadBalancer, permitindo ao Frontend React consumir a API unificada.
-            </p>
-        </section>
-
-        <section id="fases" class="section-container glass-panel animate-slide-up">
-            <h2><i class="fa-solid fa-list-check text-accent"></i> As Cinco Fases do Projeto</h2>
+        <section id="desenvolvimento" class="section-container glass-panel animate-slide-up">
+            <h2><i class="fa-solid fa-list-check text-accent"></i> Desenvolvimento e Desafios</h2>
             
             <div class="phase-card">
-                <h3>1. Validação Funcional</h3>
-                <p>Foram realizados testes fim-a-fim interagindo com a interface gráfica. Com o frontend configurado para apontar para o Gateway, testamos a autenticação simulando diversos perfis (Médico, Estagiário e Pesquisador). O Gateway extraiu o JWT com sucesso, fez as validações necessárias e encaminhou a requisição via gRPC. A validação atestou que as regras de negócio de acesso (ex: Pesquisador consumindo dados pseudo-anonimizados pelo serviço Data Transform) operaram conforme o esperado.</p>
+                <h3>O que fizemos</h3>
+                <p>Desenvolvemos uma aplicação completa simulando um Prontuário Eletrônico do Paciente (PEP), dividida em microsserviços. O sistema inclui um serviço de Autenticação baseado em JWT com controle de papéis (RBAC), um serviço de Dados Clínicos focado no padrão HL7 FHIR usando PostgreSQL, e um serviço de Transformação de Dados via gRPC para pseudo-anonimização e controle de acesso a níveis granulares (FULL, PARTIAL, ANONYMIZED e AGGREGATED). Além disso, construímos um Frontend moderno em React com Vite para demonstrar o consumo prático das APIs integradas via o Gateway (Stub).</p>
             </div>
 
             <div class="phase-card">
-                <h3>2. Testes de Carga (Stress Testing)</h3>
-                <p>Para os testes de carga, utilizamos a ferramenta K6. Foram modelados cenários de simulação de tráfego injetando 10, 50, 100, 500 e 1000 requisições simultâneas contra a rota de listagem de pacientes. Observamos que até 100 usuários virtuais o sistema respondeu com p95 &lt; 200ms. No cenário de 500 e 1000 usuários, notou-se degradação de performance e alguns timeouts por esgotamento de recursos no único Pod do Gateway, justificando a necessidade de replicação.</p>
+                <h3>Quais foram as dificuldades</h3>
+                <p>Enfrentamos desafios significativos na integração entre todos os componentes, especialmente na implementação dos interceptadores gRPC para verificação do token JWT de forma síncrona. Outro ponto crítico foi lidar com a tipagem e os arquivos <code>.proto</code> gerados, garantindo que o Stub FastAPI se comunicasse corretamente com os microsserviços Python. Além disso, a montagem do ambiente de contêineres utilizando o Docker Compose e a resolução de conflitos de portas nos testes de desenvolvimento exigiu grande alinhamento da equipe.</p>
             </div>
 
             <div class="phase-card">
-                <h3>3. Escalabilidade Horizontal</h3>
-                <p>Aplicando o comando <code>kubectl scale deployment api-gateway --replicas=3</code>, a carga foi distribuída entre três Pods. Ao reexecutar o teste com 500 usuários, o sistema recuperou a estabilidade e o tempo de resposta caiu significativamente, demonstrando que o gargalo computacional foi mitigado pela orquestração do Kubernetes aliada a serviços Stateless.</p>
-            </div>
-
-            <div class="phase-card">
-                <h3>4. Autoscaling (HPA)</h3>
-                <p>Foi configurado o Horizontal Pod Autoscaler limitando o uso de CPU a 70% da capacidade por Pod (Resource requests configurados adequadamente). Ao simular uma rampa agressiva de acessos, o HPA detectou a anomalia através do Metrics Server e instanciou Pods adicionais dinamicamente (de 1 para até 5 réplicas), sustentando a carga de forma autônoma. Após o fim do teste, os Pods foram terminados de forma gradual.</p>
-            </div>
-
-            <div class="phase-card">
-                <h3>5. Observabilidade</h3>
-                <p>Instrumentamos os microsserviços (como o Datatransform) para expor métricas Prometheus na porta 9103. No Kubernetes, foi feito o deploy do Prometheus para raspar esses dados e do Grafana para visualização. Criamos um dashboard focado no acompanhamento de Throughput (Requisições por Segundo), Latência de respostas gRPC e Taxa de Erros, permitindo visualizar de maneira clara o comportamento da aplicação sob estresse.</p>
+                <h3>O que faltou implementar</h3>
+                <p>Devido à restrição de tempo, não conseguimos realizar o deploy completo da aplicação em um cluster Kubernetes distribuído na nuvem, focando apenas na execução local com Docker Compose. Por consequência desse ambiente simplificado, optamos por não incluir os dashboards de métricas de observabilidade ou testes de carga avançados, já que esses dados não teriam a mesma precisão e relevância fora de um cluster real.</p>
             </div>
         </section>
 
@@ -168,15 +131,15 @@
 
                 <div class="aluno-card glass-panel-inner">
                     <h4>Daniel dos Santos Barros de Sousa</h4>
-                    <p><strong>Foco do trabalho:</strong> Microsserviço de DataTransform e manipulação de dados com exposição de métricas.</p>
-                    <p><strong>Aprendizados:</strong> Compreensão profunda do padrão HL7 FHIR, baseada em papéis, como também a implementação de interceptores gRPC com foto em usar token jwt, expondo as métricas via monitoramento de requisições.</p>
+                    <p><strong>Foco do trabalho:</strong> Microsserviço de DataTransform e manipulação de dados sensíveis.</p>
+                    <p><strong>Aprendizados:</strong> Compreensão profunda do padrão HL7 FHIR, baseada em papéis, como também a implementação de interceptores gRPC com foco em usar token jwt para o controle de acesso granular.</p>
                     <div class="nota-badge">Autoavaliação: 10</div>
                 </div>
 
                 <div class="aluno-card glass-panel-inner">
                     <h4>Gabriel Freitas Balbino</h4>
-                    <p><strong>Foco do trabalho:</strong> Observabilidade (Grafana/Prometheus) e integração Auth.</p>
-                    <p><strong>Aprendizados:</strong> Aprendi a instrumentar métricas em aplicações Python e a traduzir dados brutos em gráficos visuais úteis para a tomada de decisão.</p>
+                    <p><strong>Foco do trabalho:</strong> Integração de Autenticação (Auth) e banco de dados isolado.</p>
+                    <p><strong>Aprendizados:</strong> Aprendi a trabalhar com comunicação gRPC no ecossistema Python, separação lógica de bancos de dados relacionais e segurança no transporte de informações entre serviços.</p>
                     <div class="nota-badge">Autoavaliação: 10</div>
                 </div>
             </div>

@@ -78,7 +78,7 @@ const EstagiarioView = ({ token }) => {
       </div>
 
       <div className="grid-main">
-        {/* Left Side: Patient Selector */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div className="glass-panel" style={{ padding: '1.25rem' }}>
             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -138,7 +138,7 @@ const EstagiarioView = ({ token }) => {
           </div>
         </div>
 
-        {/* Right Side: Detailed Medical Record (Partial Access) */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {loading ? (
             <div className="glass-panel" style={{ padding: '4rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -148,8 +148,7 @@ const EstagiarioView = ({ token }) => {
               </div>
             </div>
           ) : error ? (
-            /* DENY Layout */
-            <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
+                        <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
               <div style={{ textAlign: 'center' }}>
                 <ShieldAlert size={48} style={{ color: 'var(--color-danger)', marginBottom: '1rem' }} />
                 <h3 style={{ fontSize: '1.4rem', color: 'var(--color-danger)', marginBottom: '0.5rem' }}>Acesso Negado (DENY)</h3>
@@ -166,9 +165,8 @@ const EstagiarioView = ({ token }) => {
               </div>
             </div>
           ) : patientRecord ? (
-            /* PARTIAL Medical Record Layout */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Demographics Card with Masking Visualizers */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem', position: 'relative' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
@@ -219,7 +217,7 @@ const EstagiarioView = ({ token }) => {
                     </div>
                   </div>
                   
-                  {/* Masked CPF */}
+                  {}
                   <div>
                     <div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       CPF <Lock size={12} style={{ color: 'var(--color-estagiario)' }} />
@@ -230,7 +228,7 @@ const EstagiarioView = ({ token }) => {
                     </div>
                   </div>
 
-                  {/* Masked CNS */}
+                  {}
                   <div>
                     <div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       CNS <Lock size={12} style={{ color: 'var(--color-estagiario)' }} />
@@ -241,7 +239,7 @@ const EstagiarioView = ({ token }) => {
                     </div>
                   </div>
 
-                  {/* Masked Phone */}
+                  {}
                   <div>
                     <div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                       Telefone <Lock size={12} style={{ color: 'var(--color-estagiario)' }} />
@@ -253,7 +251,7 @@ const EstagiarioView = ({ token }) => {
                   </div>
                 </div>
 
-                {/* Masked Address */}
+                {}
                 <div style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
                   <div style={{ color: 'var(--text-muted)', display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
                     Endereço <Lock size={12} style={{ color: 'var(--color-estagiario)' }} />
@@ -265,7 +263,7 @@ const EstagiarioView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Resumo Clínico (Exames e Medicamentos) */}
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-estagiario)' }}>
                   <FileText size={18} />
@@ -273,7 +271,7 @@ const EstagiarioView = ({ token }) => {
                 </h3>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-                  {/* Conditions */}
+                  {}
                   <div>
                     <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Diagnósticos</h4>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -294,7 +292,7 @@ const EstagiarioView = ({ token }) => {
                     </div>
                   </div>
 
-                  {/* Medications */}
+                  {}
                   <div>
                     <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Medicamentos Prescritos</h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -315,7 +313,7 @@ const EstagiarioView = ({ token }) => {
                     </div>
                   </div>
 
-                  {/* Observations / Exams */}
+                  {}
                   <div>
                     <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Exames e Sinais Clínicos</h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -338,7 +336,7 @@ const EstagiarioView = ({ token }) => {
                 </div>
               </div>
 
-              {/* FHIR Render */}
+              {}
               {fhirData && (
                 <FHIRVisualizer data={fhirData} title={fhirTitle} />
               )}

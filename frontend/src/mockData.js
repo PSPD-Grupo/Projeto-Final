@@ -1,4 +1,4 @@
-// Mock Data for the Portal Hospitalar HL7/FHIR & Observabilidade K8S
+
 
 export const MOCK_USERS = {
   "dr.cardoso": {
@@ -25,7 +25,7 @@ export const MOCK_USERS = {
   }
 };
 
-// Database Patients (raw representation)
+
 export const MOCK_PATIENTS = {
   "P000001": {
     id: "P000001",
@@ -69,20 +69,20 @@ export const MOCK_PATIENTS = {
   }
 };
 
-// User Patient Assignments (Authorization linkages)
-// Doctor P000001, P000002, P000003
-// Intern P000001, P000002
+
+
+
 export const MOCK_ASSIGNMENTS = [
   { id: "V001", caregiver: "dr.cardoso", id_paciente: "P000001", type: "MEDICO", supervisor: null, status: "ATIVO" },
   { id: "V002", caregiver: "dr.cardoso", id_paciente: "P000002", type: "MEDICO", supervisor: null, status: "ATIVO" },
   { id: "V003", caregiver: "dr.cardoso", id_paciente: "P000003", type: "MEDICO", supervisor: null, status: "ATIVO" },
   { id: "V004", caregiver: "est.barros", id_paciente: "P000001", type: "ESTAGIARIO", supervisor: "dr.cardoso", status: "ATIVO" },
   { id: "V005", caregiver: "est.barros", id_paciente: "P000002", type: "ESTAGIARIO", supervisor: "dr.cardoso", status: "ATIVO" }
-  // Note: P000003 is NOT assigned to est.barros (returns DENY)
-  // Note: P000004 is NOT assigned to dr.cardoso or est.barros (returns DENY)
+  
+  
 ];
 
-// Encounters (Atendimentos)
+
 export const MOCK_ENCOUNTERS = [
   { id: "E000001", id_paciente: "P000001", data_inicio: "2026-02-10", data_fim: "2026-02-10", tipo: "Ambulatorial", setor: "Cardiologia" },
   { id: "E000002", id_paciente: "P000001", data_inicio: "2026-04-18", data_fim: "2026-04-20", tipo: "Internação", setor: "Cardiologia" },
@@ -90,32 +90,32 @@ export const MOCK_ENCOUNTERS = [
   { id: "E000004", id_paciente: "P000003", data_inicio: "2026-05-20", data_fim: "2026-05-20", tipo: "Emergência", setor: "Clínica Médica" }
 ];
 
-// Clinical Events
+
 export const MOCK_CLINICAL_EVENTS = [
-  // Patient 1 - Encounter 1
+  
   { id_evento: "EV001", id_paciente: "P000001", id_atendimento: "E000001", tipo: "Condição", codigo: "Hipertensão", descricao: "Hipertensão Arterial Sistêmica", data_evento: "2026-02-10" },
   { id_evento: "EV002", id_paciente: "P000001", id_atendimento: "E000001", tipo: "Medicação", codigo: "Losartana", descricao: "Losartana Potássica 50mg, via oral, uma vez ao dia", data_evento: "2026-02-10" },
-  // Patient 1 - Encounter 2
+  
   { id_evento: "EV003", id_paciente: "P000001", id_atendimento: "E000002", tipo: "Observação", codigo: "Pressão Arterial", descricao: "Pressão Arterial aferida na internação: 150/95 mmHg", data_evento: "2026-04-18", valor: "150/95", unidade: "mmHg" },
-  // Patient 2 - Encounter 3
+  
   { id_evento: "EV004", id_paciente: "P000002", id_atendimento: "E000003", tipo: "Condição", codigo: "Diabetes", descricao: "Diabetes Mellitus Tipo 2", data_evento: "2026-03-15" },
   { id_evento: "EV005", id_paciente: "P000002", id_atendimento: "E000003", tipo: "Medicação", codigo: "Metformina", descricao: "Cloridrato de Metformina 850mg, via oral, duas vezes ao dia", data_evento: "2026-03-15" },
   { id_evento: "EV006", id_paciente: "P000002", id_atendimento: "E000003", tipo: "Observação", codigo: "Glicemia", descricao: "Glicemia de jejum", data_evento: "2026-03-15", valor: "182", unidade: "mg/dL" },
   { id_evento: "EV007", id_paciente: "P000002", id_atendimento: "E000003", tipo: "Observação", codigo: "HbA1c", descricao: "Hemoglobina Glicada", data_evento: "2026-03-15", valor: "8.1", unidade: "%" },
   { id_evento: "EV008", id_paciente: "P000002", id_atendimento: "E000003", tipo: "Observação", codigo: "IMC", descricao: "Índice de Massa Corporal", data_evento: "2026-03-15", valor: "31.2", unidade: "kg/m²" },
-  // Patient 3 - Encounter 4
+  
   { id_evento: "EV009", id_paciente: "P000003", id_atendimento: "E000004", tipo: "Condição", codigo: "Pneumonia", descricao: "Pneumonia Comunitária Aguda", data_evento: "2026-05-20" },
   { id_evento: "EV010", id_paciente: "P000003", id_atendimento: "E000004", tipo: "Medicação", codigo: "Amoxicilina", descricao: "Amoxicilina + Clavulanato de Potássio 875mg + 125mg, via oral, a cada 12h por 7 dias", data_evento: "2026-05-20" }
 ];
 
-// Research Projects
+
 export const MOCK_PROJECTS = [
   { id_projeto: "PRJ01", titulo: "Estudo Epidemiológico de Diabetes em Jovens e Adultos", pesquisador: "pesq.fonseca", codigo_condicao: "Diabetes", status: "Aprovado", validade: "2028-12-31" },
   { id_projeto: "PRJ02", titulo: "Análise de Hipertensão Arterial e Fatores de Risco na Atenção Primária", pesquisador: "pesq.fonseca", codigo_condicao: "Hipertensão", status: "Aprovado", validade: "2027-06-30" },
   { id_projeto: "PRJ03", titulo: "Pesquisa Experimental de Obesidade e Perfil Glicêmico", pesquisador: "pesq.fonseca", codigo_condicao: "Obesidade", status: "Suspenso", validade: "2025-01-01" }
 ];
 
-// Pre-generated FHIR Resources for Demo Mode Visualizer
+
 export const MOCK_FHIR_RESOURCES = {
   Patient: {
     "P000001": {
@@ -307,7 +307,7 @@ export const MOCK_FHIR_RESOURCES = {
   }
 };
 
-// Cohort & Statistics Mock Data for Researchers
+
 export const MOCK_COHORTS_STATS = {
   "Diabetes": {
     totalCases: 14238,
@@ -358,16 +358,16 @@ export const MOCK_COHORTS_STATS = {
   }
 };
 
-// K8S Observability Statistics for each Load Scenario
-// Scenarios: 10, 50, 100, 500, 1000 simultaneous users
+
+
 export const MOCK_OBSERVABILITY_DATA = {
   10: {
-    throughput: 120, // req/sec
-    latency: 18, // ms
-    errorRate: 0.0, // %
-    cpuUsage: 14, // % average per pod
-    memUsage: 35, // % average per pod
-    pods: 1, // replica count
+    throughput: 120, 
+    latency: 18, 
+    errorRate: 0.0, 
+    cpuUsage: 14, 
+    memUsage: 35, 
+    pods: 1, 
     scaleEvent: "Estável (mínimo de réplicas)"
   },
   50: {
@@ -383,9 +383,9 @@ export const MOCK_OBSERVABILITY_DATA = {
     throughput: 1120,
     latency: 38,
     errorRate: 0.1,
-    cpuUsage: 72, // HPA threshold crossed (>70% CPU)
+    cpuUsage: 72, 
     memUsage: 58,
-    pods: 2, // Scales up to 2
+    pods: 2, 
     scaleEvent: "HPA ativado: Pods escalados de 1 para 2"
   },
   500: {
@@ -394,7 +394,7 @@ export const MOCK_OBSERVABILITY_DATA = {
     errorRate: 0.3,
     cpuUsage: 81,
     memUsage: 64,
-    pods: 5, // Scales up to 5
+    pods: 5, 
     scaleEvent: "HPA ativado: Pods escalados de 2 para 5"
   },
   1000: {
@@ -403,7 +403,7 @@ export const MOCK_OBSERVABILITY_DATA = {
     errorRate: 1.4,
     cpuUsage: 89,
     memUsage: 78,
-    pods: 10, // Scales to max (10 replicas)
+    pods: 10, 
     scaleEvent: "Tráfego Máximo: Replicas escaladas para o limite (10 pods)"
   }
 };

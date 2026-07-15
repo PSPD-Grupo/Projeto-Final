@@ -41,7 +41,7 @@ const MedicoView = ({ token }) => {
       setPatientRecord(details);
       setSelectedPatient(patientId);
     } catch (err) {
-      // In case of DENY
+      
       setPatientRecord(null);
       setSelectedPatient(patientId);
       setError(err.message);
@@ -78,7 +78,7 @@ const MedicoView = ({ token }) => {
       </div>
 
       <div className="grid-main">
-        {/* Left Side: Patient Selector */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           <div className="glass-panel" style={{ padding: '1.25rem' }}>
             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -138,7 +138,7 @@ const MedicoView = ({ token }) => {
           </div>
         </div>
 
-        {/* Right Side: Detailed Medical Record */}
+        {}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           {loading ? (
             <div className="glass-panel" style={{ padding: '4rem', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -148,8 +148,7 @@ const MedicoView = ({ token }) => {
               </div>
             </div>
           ) : error ? (
-            /* DENY Layout */
-            <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
+                        <div className="glass-panel" style={{ padding: '3rem', border: '1px solid var(--color-danger)', background: 'rgba(244, 63, 94, 0.03)' }}>
               <div style={{ textAlign: 'center' }}>
                 <ShieldAlert size={48} style={{ color: 'var(--color-danger)', marginBottom: '1rem' }} />
                 <h3 style={{ fontSize: '1.4rem', color: 'var(--color-danger)', marginBottom: '0.5rem' }}>Acesso Negado (DENY)</h3>
@@ -166,9 +165,8 @@ const MedicoView = ({ token }) => {
               </div>
             </div>
           ) : patientRecord ? (
-            /* FULL Medical Record Layout */
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-              {/* Demographics Card */}
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem' }}>
                   <div>
@@ -221,7 +219,7 @@ const MedicoView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Clinical Summary */}
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-medico)' }}>
                   <Clipboard size={18} />
@@ -229,7 +227,7 @@ const MedicoView = ({ token }) => {
                 </h3>
                 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-                  {/* Active Conditions */}
+                  {}
                   <div>
                     <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Condições Clínicas Ativas</h4>
                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
@@ -250,7 +248,7 @@ const MedicoView = ({ token }) => {
                     </div>
                   </div>
 
-                  {/* Active Prescriptions */}
+                  {}
                   <div>
                     <h4 style={{ fontSize: '0.9rem', color: 'var(--text-muted)', textTransform: 'uppercase', marginBottom: '0.5rem' }}>Prescrições Vigentes</h4>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -273,7 +271,7 @@ const MedicoView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Timeline Events / Histórico Clínico */}
+              {}
               <div className="glass-panel" style={{ padding: '1.5rem' }}>
                 <h3 style={{ fontSize: '1.2rem', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-medico)' }}>
                   <Activity size={18} />
@@ -296,7 +294,7 @@ const MedicoView = ({ token }) => {
                             ID: {enc.id} • Duração: {enc.data_inicio} a {enc.data_fim}
                           </div>
                           
-                          {/* Events inside this encounter */}
+                          {}
                           {encEvents.length > 0 && (
                             <div style={{ borderLeft: '1px dashed var(--border-color)', paddingLeft: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '0.5rem' }}>
                               {encEvents.map(evt => (
@@ -343,7 +341,7 @@ const MedicoView = ({ token }) => {
                 </div>
               </div>
 
-              {/* Rendering selected FHIR Resource */}
+              {}
               {fhirData && (
                 <FHIRVisualizer data={fhirData} title={fhirTitle} />
               )}

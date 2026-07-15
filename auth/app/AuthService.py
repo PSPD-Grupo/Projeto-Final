@@ -109,7 +109,7 @@ class AuthService(auth_pb2_grpc.AuthServicer):
         role = ""
         if "FULL" in permission: role = "MEDICO"
         elif "PARTIAL" in permission: role = "ESTAGIARIO"
-        elif "AGREGATED" in permission: role = "PESQUISADOR"
+        elif "AGGREGATED" in permission: role = "PESQUISADOR"
 
         expires_at = int(time.time())+ACCESS_TOKEN_TLL_SECCOND
         permisao["exp"] = expires_at

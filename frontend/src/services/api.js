@@ -1,4 +1,4 @@
-// API Service with Live API vs Mock Mode toggle
+
 
 import {
   MOCK_USERS,
@@ -11,9 +11,9 @@ import {
   MOCK_FHIR_RESOURCES
 } from '../mockData';
 
-// Configurable API Gateway URL for Live Mode
+
 let API_BASE_URL = localStorage.getItem('API_BASE_URL') || 'http://localhost:8000';
-let IS_MOCK_MODE = false; // Default to true for easy demo on GitHub Pages
+let IS_MOCK_MODE = false; 
 
 export const getApiConfig = () => ({
   baseUrl: API_BASE_URL,
@@ -27,10 +27,10 @@ export const setApiConfig = (isMock, baseUrl) => {
   localStorage.setItem('API_BASE_URL', baseUrl);
 };
 
-// Helper: Simulate delay for realistic feeling
+
 const delay = (ms = 400) => new Promise(resolve => setTimeout(resolve, ms));
 
-// Helper: Simple JWT parser simulation
+
 const parseJwt = (token) => {
   try {
     const base64Url = token.split('.')[1];
@@ -72,15 +72,15 @@ export const api = {
         if (!response.ok) throw new Error('Credenciais inválidas');
 
         const data = await response.json();
-        // Real API returns { access_token, refresh_token, expires_at }
+        
         const token = data.access_token;
         const decoded = parseJwt(token);
         if (!decoded) throw new Error('Token inválido recebido do servidor');
 
-        // Build the user object from the token payload
+        
         const user = {
           username: decoded.sub,
-          name: decoded.name || decoded.sub, // Fallback if name is not in JWT
+          name: decoded.name || decoded.sub, 
           role: decoded.role || 'MEDICO'
         };
 
@@ -90,16 +90,16 @@ export const api = {
       }
     }
 
-    // Mock Mode
+    
     const user = MOCK_USERS[username.toLowerCase()];
-    if (user && password === '123456') { // Simple default password for all mock accounts
+    if (user && password === '123456') { 
       const token = generateSimulatedToken(user);
       return { token, user };
     }
     throw new Error('Usuário ou senha inválidos. Utilize a senha padrão "123456" ou selecione um perfil de atalho.');
   },
 
-  // 2. Fetch Patients List based on active role
+  
   getPatients: async (token) => {
     await delay(500);
     if (!IS_MOCK_MODE) {
@@ -119,13 +119,13 @@ export const api = {
       }));
     }
 
-    // Mock Mode Authorization & Filtering Logic
+    
     const decoded = parseJwt(token);
     if (!decoded) throw new Error('Token JWT inválido ou ausente');
     const { sub: username, role } = decoded;
 
     if (role === 'MEDICO') {
-      // Return patients assigned to this doctor
+      
       const assignedIds = MOCK_ASSIGNMENTS
         .filter(a => a.caregiver === username && a.type === 'MEDICO' && a.status === 'ATIVO')
         .map(a => a.id_paciente);
@@ -134,33 +134,33 @@ export const api = {
     }
 
     if (role === 'ESTAGIARIO') {
-      // Return patients assigned to supervised activity
+      
       const assignedIds = MOCK_ASSIGNMENTS
         .filter(a => a.caregiver === username && a.type === 'ESTAGIARIO' && a.status === 'ATIVO')
         .map(a => a.id_paciente);
 
       const rawPatients = Object.values(MOCK_PATIENTS).filter(p => assignedIds.includes(p.id));
 
-      // Data Transform Service Action: Mask sensitive fields!
+      
       return rawPatients.map(p => ({
         ...p,
-        name: p.name.split(' ').map((word, i) => i === 0 ? word : word[0] + '...').join(' '), // Initials only
+        name: p.name.split(' ').map((word, i) => i === 0 ? word : word[0] + '...').join(' '), 
         cpf: '***.***.***-**',
         cns: '***************',
         phone: '(61) 9****-****',
-        address: p.address.split(',').slice(-2).join(', ').trim() // Show city/state only
+        address: p.address.split(',').slice(-2).join(', ').trim() 
       }));
     }
 
     if (role === 'PESQUISADOR') {
-      // Researchers do not get raw patient lists (Acesso ANONYMIZED ou AGGREGATED apenas)
+      
       throw new Error('Acesso negado: Pesquisadores não possuem permissão para listar prontuários diretos de pacientes.');
     }
 
     throw new Error('Papel de usuário desconhecido');
   },
 
-  // 3. Fetch Patient clinical timeline and events
+  
   getPatientDetails: async (patientId, token) => {
     await delay(600);
     if (!IS_MOCK_MODE) {
@@ -201,12 +201,12 @@ export const api = {
       };
     }
 
-    // Mock Mode detailed verification & masking
+    
     const decoded = parseJwt(token);
     if (!decoded) throw new Error('Token JWT inválido');
     const { sub: username, role } = decoded;
 
-    // Check relationship
+    
     const hasAssignment = MOCK_ASSIGNMENTS.some(a =>
       a.caregiver === username &&
       a.id_paciente === patientId &&
@@ -215,13 +215,13 @@ export const api = {
     );
 
     if (!hasAssignment) {
-      // Authorization Service simulation: Return DENY
+      
       throw new Error(`Acesso negado (DENY): Usuário '${username}' com papel '${role}' não possui vínculo ativo com o paciente '${patientId}'.`);
     }
 
     let patient = MOCK_PATIENTS[patientId];
     if (role === 'ESTAGIARIO') {
-      // Data Transform Service: Masking data (PARTIAL access)
+      
       patient = {
         ...patient,
         name: patient.name.split(' ').map((word, i) => i === 0 ? word : word[0] + '...').join(' '),
@@ -238,7 +238,7 @@ export const api = {
     return { patient, encounters, events };
   },
 
-  // 4. Researchers specific: Cohorts filter
+  
   getCohortData: async (cohortCode, projectId, token) => {
     await delay(600);
     if (!IS_MOCK_MODE) {
@@ -276,14 +276,14 @@ export const api = {
       };
     }
 
-    // Mock Mode Researcher rules
+    
     const decoded = parseJwt(token);
     if (!decoded || decoded.role !== 'PESQUISADOR') throw new Error('Acesso permitido apenas para pesquisadores');
 
     const project = MOCK_PROJECTS.find(p => p.id_projeto === projectId);
     if (!project) throw new Error('Projeto não encontrado');
 
-    // Rule: "O pesquisador só pode acessar se o projeto estiver aprovado e vigente"
+    
     if (project.status !== 'Aprovado') {
       throw new Error(`Acesso negado (DENY): O projeto '${projectId}' (${project.titulo}) está com status '${project.status}' (Não vigente).`);
     }
@@ -298,7 +298,7 @@ export const api = {
     return stats;
   },
 
-  // 5. Fetch Projects List
+  
   getProjects: async (token) => {
     await delay(300);
     if (!IS_MOCK_MODE) {
@@ -321,7 +321,7 @@ export const api = {
     return MOCK_PROJECTS.filter(p => p.pesquisador === decoded.sub);
   },
 
-  // 6. Fetch FHIR JSON format
+  
   getFHIRResource: async (resourceType, id, token) => {
     await delay(400);
     if (!IS_MOCK_MODE) {
@@ -332,13 +332,13 @@ export const api = {
       return await response.json();
     }
 
-    // Mock Mode FHIR dictionary lookup
+    
     const list = MOCK_FHIR_RESOURCES[resourceType];
     if (list && list[id]) {
       return list[id];
     }
 
-    // Otherwise fallback/generate a minimal FHIR representation dynamically
+    
     if (resourceType === 'Patient') {
       const p = MOCK_PATIENTS[id];
       if (p) {
@@ -352,7 +352,7 @@ export const api = {
       }
     }
 
-    // Default dynamic mock FHIR
+    
     const event = MOCK_CLINICAL_EVENTS.find(e => e.id_evento === id);
     if (event) {
       if (resourceType === 'Condition') {

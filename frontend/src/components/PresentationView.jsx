@@ -5,7 +5,7 @@ const PresentationView = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   const slides = [
-    // Slide 0: Title Slide
+    
     {
       title: "Monitoramento e Observabilidade em Clusters K8S",
       subtitle: "Estudo de Caso: Portal Hospitalar HL7/FHIR de Microsserviços",
@@ -32,7 +32,7 @@ const PresentationView = () => {
         </div>
       )
     },
-    // Slide 1: Problem & Objective
+    
     {
       title: "Objetivo do Projeto",
       subtitle: "O Desafio Clínico e a Observabilidade K8S",
@@ -65,7 +65,7 @@ const PresentationView = () => {
         </div>
       )
     },
-    // Slide 2: System Architecture
+    
     {
       title: "Arquitetura da Aplicação",
       subtitle: "Divisão de Responsabilidades e gRPC",
@@ -107,7 +107,7 @@ const PresentationView = () => {
         </div>
       )
     },
-    // Slide 3: Kubernetes Infrastructure
+    
     {
       title: "Cluster Kubernetes",
       subtitle: "Montagem da Infraestrutura do Experimento",
@@ -134,7 +134,7 @@ const PresentationView = () => {
         </div>
       )
     },
-    // Slide 4: Load Testing & Performance
+    
     {
       title: "Resultados dos Testes de Carga",
       subtitle: "Análise de Elasticidade e Desempenho",
@@ -225,7 +225,7 @@ const PresentationView = () => {
   return (
     <div className="glass-panel animate-fade-in" style={{ padding: '2.5rem', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: '480px' }}>
       
-      {/* Slide Header */}
+      {}
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1rem' }}>
           {activeSlide.icon}
@@ -237,12 +237,12 @@ const PresentationView = () => {
         <hr style={{ border: 'none', borderTop: '1px solid var(--border-color)', margin: '1rem 0' }} />
       </div>
 
-      {/* Slide Body */}
+      {}
       <div style={{ flexGrow: 1, padding: '1rem 0' }}>
         {activeSlide.content}
       </div>
 
-      {/* Slide Footer / Navigation */}
+      {}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '2rem', borderTop: '1px solid var(--border-color)', paddingTop: '1.25rem' }}>
         <span style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
           Slide {currentSlide + 1} de {slides.length}

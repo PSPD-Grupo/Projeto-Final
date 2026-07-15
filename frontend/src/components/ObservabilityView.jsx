@@ -21,7 +21,7 @@ const ObservabilityView = () => {
         </span>
       </div>
 
-      {/* Load Selection Bar */}
+      {}
       <div className="glass-panel" style={{ padding: '1.25rem', marginBottom: '2rem' }}>
         <h3 style={{ fontSize: '1rem', marginBottom: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <Play size={16} className="text-primary" />
@@ -46,9 +46,9 @@ const ObservabilityView = () => {
         </div>
       </div>
 
-      {/* Metrics Row */}
+      {}
       <div className="grid-stats">
-        {/* Throughput */}
+        {}
         <div className="glass-panel" style={{ padding: '1.25rem' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Throughput (Vazão)</div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '0.2rem 0', color: 'var(--text-primary)' }}>
@@ -59,7 +59,7 @@ const ObservabilityView = () => {
           </div>
         </div>
 
-        {/* Latency */}
+        {}
         <div className="glass-panel" style={{ padding: '1.25rem' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Latência Média</div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '0.2rem 0', color: data.latency > 100 ? 'var(--color-warning)' : 'var(--color-success)' }}>
@@ -70,7 +70,7 @@ const ObservabilityView = () => {
           </div>
         </div>
 
-        {/* Error Rate */}
+        {}
         <div className="glass-panel" style={{ padding: '1.25rem' }}>
           <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Taxa de Erro HTTP/gRPC</div>
           <div style={{ fontSize: '1.8rem', fontWeight: 'bold', margin: '0.2rem 0', color: data.errorRate > 1 ? 'var(--color-danger)' : 'var(--color-success)' }}>
@@ -83,7 +83,7 @@ const ObservabilityView = () => {
       </div>
 
       <div className="grid-main" style={{ gridTemplateColumns: '1fr' }}>
-        {/* Kubernetes Cluster Scaling Map */}
+        {}
         <div className="glass-panel" style={{ padding: '1.5rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
             <h3 style={{ fontSize: '1.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -96,7 +96,7 @@ const ObservabilityView = () => {
           </div>
 
           <div style={{ background: 'rgba(0, 0, 0, 0.2)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-md)', padding: '1.5rem', marginBottom: '1.5rem' }}>
-            {/* Visual Pod Grid */}
+            {}
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
               {Array.from({ length: 10 }).map((_, idx) => {
                 const isOnline = idx < data.pods;
@@ -138,7 +138,7 @@ const ObservabilityView = () => {
             </div>
           </div>
 
-          {/* Scale Event Logger */}
+          {}
           <div className="glass-card" style={{ background: 'rgba(0,0,0,0.15)', padding: '1rem', borderStyle: 'dashed' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-warning)', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.4rem' }}>
               <AlertTriangle size={14} />
@@ -150,9 +150,9 @@ const ObservabilityView = () => {
           </div>
         </div>
 
-        {/* Resources Usage Grid */}
+        {}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
-          {/* CPU Usage Graph */}
+          {}
           <div className="glass-panel" style={{ padding: '1.5rem' }}>
             <h4 style={{ fontSize: '1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <Cpu size={16} className="text-primary" /> Uso de CPU dos Pods (Médio)
@@ -173,7 +173,7 @@ const ObservabilityView = () => {
             </div>
           </div>
 
-          {/* Memory Usage Graph */}
+          {}
           <div className="glass-panel" style={{ padding: '1.5rem' }}>
             <h4 style={{ fontSize: '1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <HardDrive size={16} className="text-primary" /> Uso de Memória dos Pods (Médio)

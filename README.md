@@ -56,30 +56,25 @@ A arquitetura do sistema é dividida em **Frontend** (SPA interativo com visuali
 
 ---
 
-## ☸️ Cluster Kubernetes e Infraestrutura
+## 📸 Telas da Aplicação
 
-A infraestrutura do projeto simula um ambiente de produção resiliente utilizando o **Kubernetes**:
-* **Nós do Cluster**: 1 nó Master (Control Plane) e pelo menos 3 nós de execução (Worker Nodes).
-* **Autoscaling (HPA)**: Configuração do *Horizontal Pod Autoscaler* baseado no uso de CPU/Memória (escala de 1 a 10 réplicas por serviço) para lidar com picos de tráfego.
-* **Coleta de Métricas**: Instalação do **Prometheus** dentro do cluster coletando dados de performance em tempo real de todas as instâncias (pods).
-* **Visualização**: **Grafana** acoplado ao Prometheus para a renderização de gráficos detalhados.
+*(**Importante**: Substitua os links abaixo pelas imagens reais dos prints após salvá-los na pasta `docs/images` do seu repositório)*
 
----
+### Tela de Login
+![Login](docs/images/login.png)
 
-## 🧪 Testes de Carga e Metodologia de Observabilidade
+### Painel do Médico (Acesso FULL)
+![Painel do Médico](docs/images/medico.png)
 
-Para avaliar a elasticidade do cluster K8S e o comportamento do HPA, foram conduzidos testes de carga automatizados com as ferramentas **k6** e **Locust**:
-* **Cenários de Teste**: 10, 50, 100, 500 e 1000 usuários simultâneos.
-* **Métricas Principais Monitoradas**:
-  1. *Throughput* (Requisições por segundo - RPS)
-  2. Latência Média de Resposta (em milissegundos)
-  3. Taxa de Erros HTTP/gRPC (%)
-  4. Utilização de CPU e Memória dos nós e pods
-  5. Tempo de reação do HPA para escalonamento automático de réplicas
+### Painel do Estagiário (Acesso PARTIAL - Dados Mascarados)
+![Painel do Estagiário](docs/images/estagiario.png)
+
+### Painel do Pesquisador (Acesso AGGREGATED - Dados Anonimizados)
+![Painel do Pesquisador](docs/images/pesquisador.png)
 
 ---
 
-## 💻 Frontend e Apresentação (GitHub Pages)
+## 💻 Frontend
 
 Para a entrega e apresentação do trabalho, o **Frontend** foi construído como um portal moderno capaz de operar em dois modos:
 1. **Modo Conectado (API Gateway)**: Comunicação direta com os microsserviços integrados no K8S através de tokens JWT.
