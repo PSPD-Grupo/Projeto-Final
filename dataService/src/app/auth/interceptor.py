@@ -1,7 +1,7 @@
 import grpc
 
-from auth.jwt_decoder import decode_token, TokenExpiredError, TokenMalformedError
-from auth.access_level import resolve_access_level, NoAccessLevelError
+from app.auth.jwt_decoder import decode_token, TokenExpiredError, TokenMalformedError
+from app.auth.access_level import resolve_access_level, NoAccessLevelError
 from app.user_context import UserContext
 
 class _ContextWrapper:
@@ -20,7 +20,7 @@ def _abort_handler(code, message, reason):
     return grpc.unary_unary_rpc_method_handler(handler)
 
 
-class JwtAuthInterceptor(grpc.ServerInterceptor):
+class JwtAuthInterceptor(grpc.aio.ServerInterceptor):
     def __init__(self, jwt_secret: str):
         self._secret = jwt_secret
 

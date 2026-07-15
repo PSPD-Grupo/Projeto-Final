@@ -2,7 +2,7 @@ from functools import lru_cache
 
 from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
-
+import os
 
 class Settings(BaseSettings):
     app_name: str = "patient-data-service"
@@ -23,6 +23,8 @@ class Settings(BaseSettings):
 
     pseudonym_salt: str = "change-me-in-production"
     log_level: str = "INFO"
+
+    jwt_secret: str = os.getenv("JWT_SECRET", "")
 
     model_config = SettingsConfigDict(env_file_encoding="utf-8")
 

@@ -30,7 +30,7 @@ class DataBaseConnection(MemoryInterface):
             user=user,
             password=password,
             host=host,
-            port=port
+            port=port,
         )
 
     def getPermissions(self,username):

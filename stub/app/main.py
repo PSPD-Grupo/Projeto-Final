@@ -1,6 +1,8 @@
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Depends, Header, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import Depends, HTTPException
 from pydantic import BaseModel, SecretStr
 import grpc.aio
 import asyncio
@@ -13,6 +15,7 @@ from .grpc_clients.patient_data import PatientDataClient
 from .grpc_clients.datatransform import DataTransformClient
 
 app = FastAPI(title="Stub FastAPI gRPC", version="0.1.0")
+
 
 # Enable CORS for frontend requests
 app.add_middleware(
@@ -27,10 +30,12 @@ class LoginRequest(BaseModel):
     username: str
     password: SecretStr  # evita que a senha apareça em logs/repr acidentalmente
 
-async def _extract_token(authorization: str = Header(...)):
-    if not authorization or not authorization.startswith("Bearer "):
-        raise HTTPException(status_code=401, detail="Token não fornecido ou formato inválido")
-    return authorization.split(" ")[1]
+security = HTTPBearer()
+
+async def _extract_token(
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    return credentials.credentials
 
 @app.post("/auth/login")
 def login(credentials: LoginRequest):

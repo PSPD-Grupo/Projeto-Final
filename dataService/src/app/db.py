@@ -1,5 +1,4 @@
 import asyncpg
-
 from app.config import Settings
 
 
@@ -18,11 +17,13 @@ class Database:
         print("DB_HOST:", self._settings.db_host)
         print("DB_PORT:", self._settings.db_port)
         print("DATABASE_DSN:", self._settings.database_dsn.replace(self._settings.db_password, "******"))
+
         
+
         self._pool = await asyncpg.create_pool(
             dsn=self._settings.database_dsn,
             min_size=self._settings.db_pool_min_size,
-            max_size=self._settings.db_pool_max_size,
+            max_size=self._settings.db_pool_max_size,            
         )
 
     async def close(self) -> None:

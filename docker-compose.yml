@@ -1,58 +1,106 @@
 services:
 
-  service:
-    build: 
+  stub-api:
+    build:
       context: ./stub
       dockerfile: dockerfile
     container_name: stub-api-final
+    restart: unless-stopped
     env_file:
       - .env
     ports:
       - "8000:8000"
+    networks:
+      - backend
 
   data-service:
     build:
       context: ./dataService
       dockerfile: Dockerfile
     container_name: data-service
+    restart: unless-stopped
     ports:
       - "50052:50052"
     environment:
-      DB_HOST: 137.131.132.161
+      DB_HOST: postgres_db
       DB_PORT: 5432
       DB_NAME: patient_db
       DB_USER: postgres
       DB_PASSWORD: postgres
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - backend
 
   auth:
     build:
       context: ./auth
       dockerfile: Dockerfile
     container_name: auth-service
-    ports:
-      - "50054:50051"
+    restart: unless-stopped
     working_dir: /app
-    command: python -m app
+    command: sh -c "sleep 4 && python -m app"
     env_file:
       - .env_docker
     environment:
-      DB_HOST: 137.131.132.161
+      DB_HOST: postgres_db
       DB_PORT: 5432
       DB_NAME: auth_hospital
       DB_USER: postgres
       DB_PASSWORD: postgres
+    ports:
+      - "50054:50051"
+    depends_on:
+      postgres_db:
+        condition: service_healthy
+    networks:
+      - backend
 
   data-transform:
-    build: 
+    build:
       context: ./datatransform
-    ports:
-      - "50053:50053"
-      - "9103:9103"
+    container_name: data-transform
+    restart: unless-stopped
     environment:
       GRPC_PORT: "50053"
       METRICS_PORT: "9103"
       JWT_SECRET: ${JWT_SECRET:-dev-secret}
       PSEUDONYMIZE_SALT: ${PSEUDONYMIZE_SALT:-dev-salt}
+    ports:
+      - "50053:50053"
+      - "9103:9103"
+    networks:
+      - backend
+
+  postgres_db:
+    image: postgres:16-alpine
+    container_name: postgres-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./db/init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: [
+        "CMD-SHELL",
+        "pg_isready -U postgres -q && psql -U postgres -d patient_db -c 'SELECT 1' -q > /dev/null 2>&1 && psql -U postgres -d auth_hospital -c 'SELECT 1' -q > /dev/null 2>&1"
+      ]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
 
 volumes:
-  pgdata:
+  postgres-data:
