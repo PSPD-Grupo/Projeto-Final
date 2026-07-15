@@ -1,5 +1,5 @@
 from enum import Enum
-from auth.jwt_decoder import TokenClaims
+from app.auth.jwt_decoder import TokenClaims
 
 
 class AccessLevel(str, Enum):

@@ -18,15 +18,19 @@ Frontend
           -> PostgreSQL
 ```
 
-O API Gateway deve validar o token do usuario e repassar contexto para o
-Patient Data Service via metadata gRPC:
+O API Gateway deve enviar o payload para Patient Data Service que ira fazer o decode e validar o usuario para fazer o serviço.
+O payload esperado é:
 
-```text
-x-user-username: nome_do_usuario
-x-user-roles: ADMIN,DOCTOR
-x-user-scopes: patient:read,patient:read:all
-x-request-id: identificador_da_requisicao
-```
+```json
+{
+  "ANONYMIZED": false,
+  "AGGREGATED": false,
+  "PARTIAL": false,
+  "FULL": true,
+  "exp": 1760000000
+  "username": "Cleitin",
+  "role": "MEDICO"
+}
 
 Usuarios com `patient:read:all` ou role `ADMIN` conseguem consultar todos os
 pacientes. Os demais usuarios so consultam pacientes com vinculo ativo em
