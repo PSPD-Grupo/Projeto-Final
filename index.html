@@ -128,8 +128,37 @@
 
                 <div class="aluno-card glass-panel-inner">
                     <h4>Pedro Fonseca Cruz</h4>
-                    <p><strong>Foco do trabalho:</strong> Arquitetura Kubernetes (YAMLs) e HPA.</p>
-                    <p><strong>Aprendizados:</strong> Compreensão profunda sobre a dinâmica de escalabilidade autônoma e os desafios de manter aplicações stateless.</p>
+                    <p><strong>Foco do trabalho:</strong> Docker Compose Unificado, Arquitetura Kubernetes (YAMLs) e Serviço de autorização (auth), Arquitetura do token JWT, Criação do banco de dados Auth e Patient db (copia do banco de dados do servidor)</p>
+                    <p><strong>Aprendizados:</strong> 
+Consegui melhorar meu desenvolvimento em comparação ao trabalho passado. Realizar o desenvolvimento inspirado no Test-Driven Development (TDD), fazendo primeiro os testes unitários e de integração e depois o desenvolvimento.
+
+<br/>
+
+Essa abordagem trouxe frutos. Não tive os mesmos problemas de implementação. O serviço de autenticação foi o serviço que apresentou menos problemas de integração no Docker.
+
+<br/>
+
+ Tive a oportunidade de aprender muito sobre tokens JWT e sobre como sua arquitetura funciona. Ao optar por implementar os tokens do zero, aprendi como eles funcionam e quais são suas vantagens. Fiquei muito contente quando descobri que, com os tokens JWT, eu não precisaria validar cada requisição dos outros serviços.
+
+<br/>
+
+Apesar de não ter conseguido implementar tudo completamente, aprendi bastante sobre deploys em Kubernetes. As variáveis de ambiente são vitais para um deploy bem-sucedido, assim como compreender o funcionamento do cluster.
+
+<br/>
+
+Também é importante saber quais permissões se possui dentro do cluster. Tive alguns problemas ao tentar subir o container do PostgreSQL devido a uma permissão negada para criar volumes.
+
+<br/>
+
+Além disso, acredito que é fundamental que os serviços estejam bem testados antes do início da etapa de deploy. Conseguir distinguir erros de desenvolvimento de erros de deploy é extremamente importante.
+
+<br/>
+
+Ademais, consegui aprofundar meu conhecimento sobre Docker e Docker Compose. Este foi o projeto com o maior número de containers que já desenvolvi e gerenciei diretamente. Foi muito interessante pensar em como os serviços precisavam ser criados e em como gerenciar as variáveis de ambiente.
+
+Também achei muito interessante ter conseguido configurar um container do PostgreSQL com dois bancos de dados. Se tivesse mais tempo, acredito que poderia analisar as diferenças entre utilizar um container para cada banco ou manter ambos no mesmo container. De qualquer forma, é bom saber que tenho as duas opções disponíveis.
+
+                    </p>
                     <div class="nota-badge">Autoavaliação: 10</div>
                 </div>
 
